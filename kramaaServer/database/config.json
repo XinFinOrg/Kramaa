@@ -2,8 +2,11 @@
   "development": {
     "username": "postgres",
     "password": "123",
-    "database": "postgres",
+    "database": "kramaa",
     "host": "localhost",
+    "logging": false,
+    "freezeTableName": true,
+    "operatorsAliases": false,
     "dialect": "postgres"
   },
   "test": {

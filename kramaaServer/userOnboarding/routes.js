@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
+var impl = require('./impl');
 
-router.get('/userOnboarding', (req, res) => {
-  var email = req.query.email;
-  console.log(email);
-});
+router.get('/userOnboarding', impl.userOnboarding);
+router.post('/userRegistration', impl.userRegistration);
+router.post('/userLogin', impl.userLogin);
 module.exports = router;

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node ./kramaaServer/bin/www & webpack-dev-server --mode development --env.dev",
+    "dev": "nodemon ./kramaaServer/bin/www & webpack-dev-server --mode development --env.dev",
     "build": "webpack"
   },
   "author": "",
@@ -23,7 +23,11 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.2.0",
+    "axios": "^0.18.0",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-cookie": "^3.0.8",
+    "react-dom": "^16.6.3",
+    "react-hot-loader": "^4.6.3",
+    "react-router-dom": "^4.3.1"
   }
 }
