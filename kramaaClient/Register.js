@@ -12,7 +12,11 @@ class Register extends Component {
         otpVerified: '',
         name: '',
         password: '',
-        userRegistered: ''
+        userRegistered: '',
+        organizationName: '',
+        addressLine1: '',
+        addressLine2: '',
+        addressLine3: ''
       };
 
       this.handleChange = this.handleChange.bind(this);
@@ -29,23 +33,25 @@ class Register extends Component {
     onSubmitForm(e) {
       e.preventDefault();
       console.log("Submitted");
-      fetch('/api/users/userOnboarding')
-      .then(res => res.json())
-      .then(response => {
-        this.setState({otp: response.otp})
+      axios.post('/api/users/userOnboarding', {email: this.state.email})
+      .then(res => {
+        this.setState({otp: res.data.otp})
         console.log("OTP is", this.state.otp);
       })
     }
 
     onSubmitOTP(e) {
       e.preventDefault();
-      if(this.state.otp == this.state.submittedOTP){
-        this.setState({otpVerified: "true"})
-      }
+      axios.post('/api/users/verifyOTP', {'email': this.state.email, 'otp': this.state.submittedOTP})
+      .then(res => {
+        if(res.data.status == "true"){
+          this.setState({otpVerified: "true"})
+        }
+      })
     }
     onSubmitUserDetails(e) {
       e.preventDefault();
-      axios.post('/api/users/userRegistration', {'email': this.state.email, 'name': this.state.name, 'password': this.state.password})
+      axios.post('/api/users/userRegistration', {'email': this.state.email, 'name': this.state.name, 'password': this.state.password, 'organizationName': this.state.organizationName, 'addressLine1': this.state.addressLine1, 'addressLine2': this.state.addressLine2, 'addressLine3': this.state.addressLine3})
       .then(res => {
         if(res.data.status== "New User"){
           this.setState({userRegistered: "true"})
@@ -60,7 +66,7 @@ class Register extends Component {
             <h2>Register</h2>
             <form name="form">
                     <label htmlFor="email">Enter your email</label>
-                    <input type="text" name="email" value= {email} onChange={this.handleChange} />
+                    <input type="text" name="email" value= {email} onChange={this.handleChange} /> <br/>
                     <button className="btn btn-primary" onClick= {this.onSubmitForm}>Register</button>
             </form>
         </div>;
@@ -68,8 +74,8 @@ class Register extends Component {
           render = <div className="col-md-6 col-md-offset-3">
             <h2>OTP</h2>
             <form name="form">
-                    <label htmlFor="otp">Please Enter your OTP</label>
-                    <input type="text" name="submittedOTP" value= {submittedOTP} onChange={this.handleChange} />
+                    <label htmlFor="otp">Please Enter your OTP</label> <br />
+                    <input type="text" name="submittedOTP" value= {submittedOTP} onChange={this.handleChange} /> <br/>
                     <button className="btn btn-primary" onClick= {this.onSubmitOTP}>Submit OTP</button>
             </form>
         </div>;
@@ -78,10 +84,18 @@ class Register extends Component {
           render = <div className="col-md-6 col-md-offset-3">
             <h2>User Details</h2>
             <form name="form">
+                    <label htmlFor="name">Please Enter your Name</label>
+                    <input type="text" name="name" value= {name} onChange={this.handleChange} /><br/>
                     <label htmlFor="name">Please Enter your Organization Name</label>
-                    <input type="text" name="name" value= {name} onChange={this.handleChange} />
+                    <input type="text" name="organizationName" value= {this.state.organizationName} onChange={this.handleChange} /><br/>
+                    <label htmlFor="name">AddressLine1</label>
+                    <input type="text" name="addressLine1" value= {this.state.addressLine1} onChange={this.handleChange} /><br/>
+                    <label htmlFor="name">AddressLine2</label>
+                    <input type="text" name="addressLine2" value= {this.state.addressLine2} onChange={this.handleChange} /><br/>
+                    <label htmlFor="name">AddressLine3</label>
+                    <input type="text" name="addressLine3" value= {this.state.addressLine3} onChange={this.handleChange} /><br/>
                     <label htmlFor="password">Please Enter a password</label>
-                    <input type="password" name="password" value= {password} onChange={this.handleChange} />
+                    <input type="password" name="password" value= {password} onChange={this.handleChange} /><br/>
                     <button className="btn btn-primary" onClick= {this.onSubmitUserDetails}>Submit Details</button>
             </form>
         </div>;

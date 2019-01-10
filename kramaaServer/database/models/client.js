@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    emailVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     verificationOTP: {
       type: DataTypes.NUMERIC
     },
@@ -37,9 +42,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   client.associate = function(models) {
-    client.hasMany(models.project, {
-      foreignKey: 'client_id',
-      onDelete: 'CASCADE',
+    client.belongsTo(models.organization, {
+      foreignKey: 'organization_id'
     });
   };
   return client;

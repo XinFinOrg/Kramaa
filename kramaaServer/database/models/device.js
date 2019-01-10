@@ -1,57 +1,38 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const project = sequelize.define('project', {
+  const device = sequelize.define('device', {
     uniqueId:{
       allowNull:false,
       primaryKey: true,
       type:DataTypes.UUID,
       defaultValue: DataTypes.UUIDV1,
     },
-    name: {
+    type: {
       type: DataTypes.STRING,
       allowNull: true,
     },
 
-    industry: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    subIndustry: {
+    urn: {
       type: DataTypes.STRING,
       allowNull: false,
     },
 
-    tokenName: {
+    tokenId: {
       type: DataTypes.STRING,
-      allowNull: true,
-    },
-    tokenSymbol: {
-      type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
 
-    tokenContractCode: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-
-    tokenContractBytecode: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-
-    tokenContractABI: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-
-    tokenContractAddress: {
+    thingURN: {
       type: DataTypes.STRING,
       allowNull: true,
     },
 
-    tokenContractTxHash: {
+    protocol: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    deviceVendor: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -67,8 +48,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue:DataTypes.NOW
     },
 }, {});
-  project.associate = function (models) {
+  device.associate = function (models) {
 
   };
-  return project;
+  return device;
 };

@@ -1,4 +1,4 @@
-const nodemailerAuth = require("../config/auth").nodemailerAuth;
+const nodemailerAuth = require("./config").nodemailerAuth;
 var nodemailer = require('nodemailer');
 var ejs = require("ejs");
 var fs = require('fs');
@@ -11,14 +11,14 @@ var transporter = nodemailer.createTransport({
 module.exports = {
   //OTP
   sendConfirmationOTP: function (recipientmail, otp) {
-    ejs.renderFile(__dirname + '/emailerTemplates/packageOTPMailer.ejs', {
+    ejs.renderFile(__dirname + '/emailerTemplates/emailVerificationOTP.ejs', {
       otp: otp
     }, (err, data) => {
       console.log(err);
       var mailOptions = {
-        from: "email@kraama.co",
+        from: "verification@kraama.co",
         to: recipientmail,
-        subject: "Package Payment OTP",
+        subject: "Email Verification OTP",
         html: data
       };
       triggerEmail(mailOptions);
@@ -40,6 +40,17 @@ module.exports = {
       triggerEmail(mailOptions);
     });
   },
+
+  invitationMailer: function(req, recipientmail) {
+    var link = "http://" + req.get('host') + "/register";
+    var mailOptions = {
+      from: "invite@kramaa.co",
+      to: recipientmail,
+      subject: "Kramaa Invitation",
+      text: link
+    };
+    triggerEmail(mailOptions);
+  }
 
 }
 

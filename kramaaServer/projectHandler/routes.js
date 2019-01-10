@@ -6,9 +6,8 @@ var Client = db.client;
 const jwt = require('jsonwebtoken');
 var configAuth = require('../config');
 
-router.post('/projectList',isLoggedIn, impl.projectList);
-router.post('/createProject', isLoggedIn, impl.createProject);
-router.post('/inviteColleague', isLoggedIn, impl.inviteColleague);
+router.post('/getProjectInfo', isLoggedIn, impl.getProjectInfo);
+router.post('/mintNewToken', isLoggedIn, impl.mintNewToken);
 module.exports = router;
 
 // route middleware to make sure a user is logged in
