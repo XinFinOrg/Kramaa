@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link} from "react-router-dom";
+import { Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
 class Register extends Component {
     constructor(props){
@@ -12,6 +13,7 @@ class Register extends Component {
         otpVerified: '',
         name: '',
         password: '',
+        repeatPassword: '',
         userRegistered: '',
         organizationName: '',
         addressLine1: '',
@@ -51,64 +53,144 @@ class Register extends Component {
     }
     onSubmitUserDetails(e) {
       e.preventDefault();
-      axios.post('/api/users/userRegistration', {'email': this.state.email, 'name': this.state.name, 'password': this.state.password, 'organizationName': this.state.organizationName, 'addressLine1': this.state.addressLine1, 'addressLine2': this.state.addressLine2, 'addressLine3': this.state.addressLine3})
-      .then(res => {
-        if(res.data.status== "New User"){
-          this.setState({userRegistered: "true"})
-        }
-      });
+      if(this.state.password == this.state.repeatPassword){
+        axios.post('/api/users/userRegistration', {'email': this.state.email, 'name': this.state.name, 'password': this.state.password, 'organizationName': this.state.organizationName, 'addressLine1': this.state.addressLine1, 'addressLine2': this.state.addressLine2, 'addressLine3': this.state.addressLine3})
+        .then(res => {
+          if(res.data.status== "New User"){
+            this.setState({userRegistered: "true"})
+          }
+        });
+      }
+      else {
+        console.log("Passwords don't match");
+      }
     }
     render() {
-        const { email, submittedOTP, otpVerified, name, password, userRegistered } = this.state;
+        const { email, submittedOTP, otpVerified, name, organizationName, addressLine1, addressLine2, addressLine3, password, repeatPassword, userRegistered } = this.state;
         let render;
         if(this.state.otp==""){
-          render = <div className="col-md-6 col-md-offset-3">
+          render = <div>
             <h2>Register</h2>
-            <form name="form">
-                    <label htmlFor="email">Enter your email</label>
-                    <input type="text" name="email" value= {email} onChange={this.handleChange} /> <br/>
-                    <button className="btn btn-primary" onClick= {this.onSubmitForm}>Register</button>
-            </form>
+            <Form>
+            <InputGroup className="mb-3">
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <i className="icon-user"></i>
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input type="text" name="email" value= {email} onChange={this.handleChange} placeholder="Enter email" autoComplete="username" />
+            </InputGroup>
+            <Button color="success" onClick= {this.onSubmitForm} block>Register</Button>
+          </Form>
         </div>;
       } else if(otpVerified==""){
-          render = <div className="col-md-6 col-md-offset-3">
+          render = <div>
             <h2>OTP</h2>
-            <form name="form">
-                    <label htmlFor="otp">Please Enter your OTP</label> <br />
-                    <input type="text" name="submittedOTP" value= {submittedOTP} onChange={this.handleChange} /> <br/>
-                    <button className="btn btn-primary" onClick= {this.onSubmitOTP}>Submit OTP</button>
-            </form>
+            <Form>
+            <InputGroup className="mb-3">
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <i className="icon-user"></i>
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input type="text" name="submittedOTP" value= {submittedOTP} onChange={this.handleChange} placeholder="Enter  OTP" autoComplete="username" />
+            </InputGroup>
+            <Button color="success" onClick= {this.onSubmitOTP} block>Submit OTP</Button>
+          </Form>
         </div>;
         }
         else if(userRegistered==""){
-          render = <div className="col-md-6 col-md-offset-3">
-            <h2>User Details</h2>
-            <form name="form">
-                    <label htmlFor="name">Please Enter your Name</label>
-                    <input type="text" name="name" value= {name} onChange={this.handleChange} /><br/>
-                    <label htmlFor="name">Please Enter your Organization Name</label>
-                    <input type="text" name="organizationName" value= {this.state.organizationName} onChange={this.handleChange} /><br/>
-                    <label htmlFor="name">AddressLine1</label>
-                    <input type="text" name="addressLine1" value= {this.state.addressLine1} onChange={this.handleChange} /><br/>
-                    <label htmlFor="name">AddressLine2</label>
-                    <input type="text" name="addressLine2" value= {this.state.addressLine2} onChange={this.handleChange} /><br/>
-                    <label htmlFor="name">AddressLine3</label>
-                    <input type="text" name="addressLine3" value= {this.state.addressLine3} onChange={this.handleChange} /><br/>
-                    <label htmlFor="password">Please Enter a password</label>
-                    <input type="password" name="password" value= {password} onChange={this.handleChange} /><br/>
-                    <button className="btn btn-primary" onClick= {this.onSubmitUserDetails}>Submit Details</button>
-            </form>
-        </div>;
+        render =    <Form>
+                      <h1>Register</h1>
+                      <p className="text-muted">Create your account</p>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-user"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="name" value= {name} onChange={this.handleChange} placeholder="Username" autoComplete="username" />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-user"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="organizationName" value= {organizationName} onChange={this.handleChange} placeholder="Organization Name" autoComplete="Organization Name" />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-user"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="addressLine1" value= {addressLine1} onChange={this.handleChange} placeholder="AddressLine1" autoComplete="AddressLine1" />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-user"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="addressLine2" value= {addressLine2} onChange={this.handleChange} placeholder="AddressLine2" autoComplete="AddressLine2" />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-user"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="addressLine3" value= {addressLine3} onChange={this.handleChange} placeholder="AddressLine3" autoComplete="AddressLine3" />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>@</InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" readOnly name="email" value= {email} placeholder="Email" autoComplete="email" />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-lock"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="password" name="password" value= {password} onChange={this.handleChange} placeholder="Password" autoComplete="new-password" />
+                      </InputGroup>
+                      <InputGroup className="mb-4">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-lock"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="password" placeholder="Repeat password" name="repeatPassword" value= {repeatPassword} onChange={this.handleChange} autoComplete="new-password" />
+                      </InputGroup>
+                      <Button color="success" onClick= {this.onSubmitUserDetails} block>Create Account</Button>
+                    </Form>;
         }
         else {
-          render = <div className="col-md-6 col-md-offset-3">
-            <h2>User Has been Registered Successfully</h2>
-             <Link to="/login">Proceed to Login</Link>
+          render = <div>
+            <h3>User Has been Registered Successfully</h3>
+              <Link to="/login">
+                <Button color="primary" className="mt-3" active tabIndex={-1}>Proceed to Login</Button>
+              </Link>
             </div>;
         }
         return (
-          <div>
-            {render}
+          <div className="app flex-row align-items-center">
+            <Container>
+              <Row className="justify-content-center">
+                <Col md="9" lg="7" xl="6">
+                  <Card className="mx-4">
+                    <CardBody className="p-4">
+
+                      {render}
+
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </Container>
           </div>
 
         );

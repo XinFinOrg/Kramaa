@@ -3,8 +3,7 @@ import { BrowserRouter, Route, Link} from "react-router-dom";
 import axios from "axios";
 import ProjectForm from './ProjectForm';
 import ReactTable from "react-table";
-// import 'react-table/react-table.css';
-
+import 'react-table/react-table.css';
 class Dashboard extends Component {
   constructor(props){
     super(props);
@@ -87,7 +86,6 @@ class Dashboard extends Component {
 
       <div>
         <div>
-        Hello {email}                                       <Link to="/profile"><button>Profile</button></Link>  <button onClick= {this.logout}>Logout</button><br/> <br/>
         Welcome to Kramaa Dashboard <br/> <br/>
         <button onClick= {this.renderProjectForm}>Create a new project </button> <br/>
         {projectForm}
