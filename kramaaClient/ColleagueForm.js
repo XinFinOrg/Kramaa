@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
+import {Form, FormGroup, FormText, Col, Button, Input} from 'reactstrap';
+
 class ColleagueForm extends Component {
   constructor(props){
     super(props);
@@ -20,6 +22,11 @@ class ColleagueForm extends Component {
     e.preventDefault();
     axios.post("/api/dashboard/inviteColleague", {clientToken: sessionStorage.getItem("clientToken"), inviteEmail: this.state.email}).then(res=> {
       console.log(res.data.status);
+      if(res.data.status=="Invitation sent successsfully"){
+        this.setState({
+          email: ''
+        })
+      }
     });
   }
 
@@ -27,11 +34,18 @@ class ColleagueForm extends Component {
     const {email} = this.state;
     return(
       <div>
-      <form name="form">
-        <label htmlFor="username">Enter Colleague Email id</label>
-        <input type="text" name="email" value= {email} onChange={this.handleChange} />
-        <button className="btn btn-primary" onClick = {this.onSubmitForm}>Invite Colleague</button>
-      </form>
+      <Form className="form-horizontal">
+        <FormGroup row>
+          <Col xs="12" md="9">
+            <Input type="email" name="email" value= {email} onChange={this.handleChange}  id="text-input" placeholder="Enter Colleague Email id" />
+            <FormText color="muted">Your colleague will be sent an invitation link on his mail.</FormText>
+          </Col>
+          <Col md="3">
+            <Button className="primary" onClick = {this.onSubmitForm}>Invite Colleague</Button>
+          </Col>
+        </FormGroup>
+
+      </Form>
       </div>
     )
   }

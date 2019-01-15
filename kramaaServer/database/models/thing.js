@@ -1,57 +1,43 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const project = sequelize.define('project', {
+  const thing = sequelize.define('device', {
     uniqueId:{
       allowNull:false,
       primaryKey: true,
       type:DataTypes.UUID,
       defaultValue: DataTypes.UUIDV1,
     },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
     name: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
 
-    industry: {
+    description: {
       type: DataTypes.STRING,
       allowNull: false,
     },
 
-    subIndustry: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    tokenName: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    tokenSymbol: {
+    spec: {
       type: DataTypes.STRING,
       allowNull: true,
     },
 
-    tokenContractCode: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-
-    tokenContractBytecode: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-
-    tokenContractABI: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-
-    tokenContractAddress: {
+    brand: {
       type: DataTypes.STRING,
       allowNull: true,
     },
 
-    tokenContractTxHash: {
+    urn: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    metadata: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -67,11 +53,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue:DataTypes.NOW
     },
 }, {});
-  project.associate = function (models) {
-    project.hasMany(models.device, {
-      foreignKey: 'project_id',
-      onDelete: 'CASCADE',
-    });
+  thing.associate = function (models) {
+
   };
-  return project;
+  return thing;
 };

@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "postgres",
-    "password": "123",
+    "password": "soL@37Ar",
     "database": "kramaa",
-    "host": "localhost",
+    "host": "78.129.208.54",
     "logging": false,
     "freezeTableName": true,
     "operatorsAliases": false,

@@ -57,12 +57,30 @@ module.exports = {
     })
   },
 
-  inviteColleague: async (req, res) => {
-    let client = await userOnboarding.createNewClient("", req.body.inviteEmail, "");
+  inviteColleague: (req, res) => {
     req.client.getOrganization().then(createdOrganization => {
-      createdOrganization.addClient(client);
-      mailer.invitationMailer(req, req.body.inviteEmail);
-      res.send({"status": "Invitation sent successsfully"});
+      Client.create({
+        email: req.body.inviteEmail
+      }).then(client => {
+        createdOrganization.addClient(client);
+        mailer.invitationMailer(req, req.body.inviteEmail);
+        res.send({"status": "Invitation sent successsfully"});
+      })
+    });
+  },
+
+  getCounts: (req, res) => {
+    req.client.getOrganization().then(organization => {
+      organization.getProjects().then(projects => {
+        organization.getDevices().then(devices => {
+          res.send({
+            "organization": organization,
+            "client": req.client,
+            "projectCount": projects.length,
+            "deviceCount": devices.length
+          });
+        })
+      });
     });
   }
 }

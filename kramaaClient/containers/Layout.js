@@ -25,11 +25,14 @@ class Layout extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
 
   signOut(e) {
-    e.prevent()
-    this.props.history.push('/login')
+    e.preventDefault()
+    sessionStorage.clear();
+    this.props.history.push('/');
   }
 
   render() {
+
+    console.log("Layout loaded");
     return (
       <div className="app">
         <AppHeader fixed>
@@ -64,7 +67,6 @@ class Layout extends Component {
                         )} />
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/dashboard" />
                 </Switch>
               </Suspense>
             </Container>

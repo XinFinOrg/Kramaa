@@ -72,7 +72,7 @@ class Login extends Component {
                     <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
                       <CardBody className="text-center">
                         <div>
-                          <h2>Sign up</h2> <br/> 
+                          <h2>Sign up</h2> <br/>
                           <p>Access the platform by registering your organization.</p>
                           <Link to="/register">
                             <Button color="primary" className="mt-3" active tabIndex={-1}>Register Now!</Button>

@@ -171,7 +171,7 @@ class Register extends Component {
         else {
           render = <div>
             <h3>User Has been Registered Successfully</h3>
-              <Link to="/login">
+              <Link to="/">
                 <Button color="primary" className="mt-3" active tabIndex={-1}>Proceed to Login</Button>
               </Link>
             </div>;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Progress } from 'reactstrap';
+import {FaBell} from "react-icons/fa";
 
 const propTypes = {
   notif: PropTypes.bool,
@@ -33,7 +34,7 @@ class HeaderDropdown extends Component {
   }
 
   dropNotif() {
-    const itemsCount = 5;
+    const itemsCount = 1;
     return (
       <Dropdown nav className="d-md-down-none" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle nav>
@@ -42,32 +43,6 @@ class HeaderDropdown extends Component {
         <DropdownMenu right>
           <DropdownItem header tag="div" className="text-center"><strong>You have {itemsCount} notifications</strong></DropdownItem>
           <DropdownItem><i className="icon-user-follow text-success"></i> New user registered</DropdownItem>
-          <DropdownItem><i className="icon-user-unfollow text-danger"></i> User deleted</DropdownItem>
-          <DropdownItem><i className="icon-chart text-info"></i> Sales report is ready</DropdownItem>
-          <DropdownItem><i className="icon-basket-loaded text-primary"></i> New client</DropdownItem>
-          <DropdownItem><i className="icon-speedometer text-warning"></i> Server overloaded</DropdownItem>
-          <DropdownItem header tag="div" className="text-center"><strong>Server</strong></DropdownItem>
-          <DropdownItem>
-            <div className="text-uppercase mb-1">
-              <small><b>CPU Usage</b></small>
-            </div>
-            <Progress className="progress-xs" color="info" value="25" />
-            <small className="text-muted">348 Processes. 1/4 Cores.</small>
-          </DropdownItem>
-          <DropdownItem>
-            <div className="text-uppercase mb-1">
-              <small><b>Memory Usage</b></small>
-            </div>
-            <Progress className="progress-xs" color="warning" value={70} />
-            <small className="text-muted">11444GB/16384MB</small>
-          </DropdownItem>
-          <DropdownItem>
-            <div className="text-uppercase mb-1">
-              <small><b>SSD 1 Usage</b></small>
-            </div>
-            <Progress className="progress-xs" color="danger" value={90} />
-            <small className="text-muted">243GB/256GB</small>
-          </DropdownItem>
         </DropdownMenu>
       </Dropdown>
     );
@@ -77,21 +52,18 @@ class HeaderDropdown extends Component {
     return (
       <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle nav>
-          <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+          <img src="http://americanmuslimconsumer.com/2013/wp-content/uploads/2013/09/blank-user.jpg" className="img-avatar" alt="admin@bootstrapmaster.com" />
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-          <DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>
-          <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge></DropdownItem>
-          <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
-          <DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>
+          <DropdownItem><FaBell />User Profile</DropdownItem>
           <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
-          <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
-          <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
-          <DropdownItem><i className="fa fa-usd"></i> Payments<Badge color="secondary">42</Badge></DropdownItem>
-          <DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>
+          <DropdownItem><i className="fa fa-user"></i> Manage Account</DropdownItem>
+          <DropdownItem><i className="fa fa-wrench"></i> Organization Profile</DropdownItem>
+          <DropdownItem><i className="fa fa-usd"></i> Organization Manager</DropdownItem>
+          <DropdownItem><i className="fa fa-file"></i> Organization Details</DropdownItem>
+          <DropdownItem><i className="fa fa-file"></i> User Database</DropdownItem>
           <DropdownItem divider />
-          <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
           <DropdownItem onClick={this.props.onLogout}><i className="fa fa-lock"></i> Logout</DropdownItem>
           {/*<DropdownItem><i className="fa fa-lock"></i> Logout</DropdownItem>*/}
         </DropdownMenu>
@@ -202,7 +174,7 @@ class HeaderDropdown extends Component {
             <div className="message">
               <div className="pt-3 mr-3 float-left">
                 <div className="avatar">
-                  <img src={'assets/img/avatars/4.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                  <img src="http://americanmuslimconsumer.com/2013/wp-content/uploads/2013/09/blank-user.jpg" className="img-avatar" alt="U" />
                   <span className="avatar-status badge-info"></span>
                 </div>
               </div>

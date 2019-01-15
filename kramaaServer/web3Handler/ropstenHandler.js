@@ -78,7 +78,7 @@ module.exports = {
     });
   },
 
-  mintNewToken: async (privateKey, tokenIdFrom, tokenIdTo, tokenURI, tokenAddress) => {
+  mintNewToken: async (privateKey, tokenIdFrom, tokenIdTo, tokenURI, deviceURN, tokenAddress) => {
     // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
     var batch = new web3.BatchRequest();
     const from = parseInt(tokenIdFrom);
@@ -92,7 +92,7 @@ module.exports = {
       var transaction = {
         "nonce": nonce,
         "to": tokenAddress,
-        "data": tokenContractInstance.methods.mintWithTokenURI("0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1", i, tokenURI).encodeABI()
+        "data": tokenContractInstance.methods.mintWithTokenURI("0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1", i, tokenURI, web3.utils.stringToHex(deviceURN)).encodeABI()
       };
       let gasLimit = await web3.eth.estimateGas(transaction);
       transaction["gasLimit"] = gasLimit;
@@ -152,7 +152,7 @@ module.exports = {
 }
 
 function receipt(err, receipt) {
-  console.log(err);
+  console.log(receipt);
 }
 
 function providerHandler(provider, ws_provider, web3) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import logo from '../assets/logo/logo-web-transparent.png';
 import { AppAsideToggler, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import HeaderDropdown  from './HeaderDropdown'
 
@@ -20,9 +20,14 @@ class Header extends Component {
 
     return (
       <React.Fragment>
+
+      <AppNavbarBrand
+        full={{ src: logo, width: 60, height: 60, alt: 'Kramaa Logo' }}
+      />
+      <AppSidebarToggler className="d-md-down-none" display="lg" />
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-            <NavLink href="/dashboard">Dashboard</NavLink>
+            <NavLink href="/dashboard" default>Dashboard</NavLink>
           </NavItem>
           <NavItem className="px-3">
             <Link to="/profile">Profile</Link>
@@ -31,7 +36,10 @@ class Header extends Component {
             <NavLink href="/settings">Settings</NavLink>
           </NavItem>
         </Nav>
-        <AppAsideToggler className="d-md-down-none" />
+        <Nav className="ml-auto" navbar>
+          <HeaderDropdown notif/>
+          <HeaderDropdown onLogout={this.props.onLogout} accnt/>
+        </Nav>
         {/*<AppAsideToggler className="d-lg-none" mobile />*/}
       </React.Fragment>
     );

@@ -1,44 +1,34 @@
 export default {
   items: [
     {
-      name: 'Kramaa',
-      url: '/dashboard',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
-    },
-    {
       name: 'Home',
-      url: '/theme/typography',
-      icon: 'icon-pencil',
+      url: '/dashboard',
+      icon: 'icon-speedometer'
     },
     {
       name: 'Projects',
-      url: '/theme/colors',
       icon: 'icon-drop',
       children: [
         {
           name: 'Create Project',
-          url: '/base/breadcrumbs',
+          url: '/dashboard',
           icon: 'icon-puzzle',
         },
         {
-          name: 'View Project',
-          url: '/base/cards',
+          name: 'View Projects',
+          url: '/projects',
           icon: 'icon-puzzle',
         }
       ]
     },
     {
       name: 'Devices',
-      url: '/theme/typography',
+      url: '/profile',
       icon: 'icon-pencil',
     },
     {
       name: 'Things',
-      url: '/theme/typography',
+      url: '/invitation',
       icon: 'icon-pencil',
     },
     {
@@ -47,7 +37,32 @@ export default {
       icon: 'icon-pencil',
     },
     {
+      name: 'Explorer',
+      url: '/theme/typography',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'Store',
+      url: '/theme/typography',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'APIs',
+      url: '/theme/typography',
+      icon: 'icon-pencil',
+    },
+    {
       name: 'Settings',
+      url: '/theme/typography',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'Plans',
+      url: '/theme/typography',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'Support',
       url: '/theme/typography',
       icon: 'icon-pencil',
     }

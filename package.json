@@ -19,6 +19,7 @@
     "babel-plugin-lodash": "^3.3.2",
     "babel-plugin-react-transform": "^3.0.0",
     "mini-css-extract-plugin": "^0.5.0",
+    "url-loader": "^1.1.2",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
@@ -33,6 +34,9 @@
     "bootstrap": "^4.2.1",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.8",
+    "flag-icon-css": "^3.2.1",
+    "font-awesome": "^4.7.0",
+    "ipfs-api": "^26.1.2",
     "node-sass": "^4.11.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
@@ -43,14 +47,13 @@
     "react-cookie": "^3.0.8",
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.6.3",
+    "react-icons": "^3.3.0",
     "react-router-dom": "^4.3.1",
     "react-table": "^6.8.6",
     "reactstrap": "^7.0.2",
     "sass-loader": "^7.1.0",
+    "simple-line-icons": "^2.4.1",
     "spinkit": "1.2.5",
-    "style-loader": "^0.23.1",
-    "flag-icon-css": "^3.2.1",
-    "font-awesome": "^4.7.0",
-    "simple-line-icons": "^2.4.1"
+    "style-loader": "^0.23.1"
   }
 }

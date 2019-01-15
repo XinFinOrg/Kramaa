@@ -43,10 +43,7 @@ class Profile extends Component {
 
   render(){
     const { email, projectList, colleagueForm, organization} = this.state;
-    // if(email==''){
-    //   console.log(email);
-    //   {this.goToLogin()};
-    // }
+
     let projectRender;
     if(projectList.length>0){
       projectRender = <BootstrapTable data={projectList} striped hover>
@@ -60,7 +57,6 @@ class Profile extends Component {
     }
     return(
       <div>
-        Hello {email}                                                           <Link to="/dashboard"><button>Dashboard</button></Link>  <button onClick= {this.logout}>Logout</button><br/> <br/>
         Welcome to Kramaa Dashboard <br/> <br/>
         Your organization: {organization.organizationName} <br/>
         <button onClick= {this.renderColleagueForm}>Add your colleagues </button>

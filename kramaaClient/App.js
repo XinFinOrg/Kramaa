@@ -7,9 +7,8 @@ import './App.scss';
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import ProjectPage from "./ProjectPage";
+import Projects from "./Projects";
 import Invitation from "./Invitation";
-import Header from "./containers/Header";
-import Footer from "./containers/Footer";
 import Layout from "./containers/Layout";
 // import DefaultLayout from "./containers/index.js";
 // import DefaultHeader from "./containers/DefaultHeader.js";
@@ -21,7 +20,13 @@ class App extends Component{
       <div className="App">
         <BrowserRouter>
           <div>
-            <Route exact path="/layout" component={Layout}/>
+            <Route exact path="/dashboard" component={Layout}/>
+            <Route exact path="/profile" component={Layout}/>
+            <Route exact path="/projects" component={Layout}/>
+            <Route exact path="/project/:projectID" component={Layout}/>
+            <Route exact path="/invitation" component={Invitation}/>
+            <Route exact path="/" component={Login}/>
+            <Route exact path="/register" component={Register}/>
           </div>
         </BrowserRouter>
       </div>

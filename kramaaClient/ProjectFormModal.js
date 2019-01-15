@@ -1,35 +1,12 @@
-import React, {Component} from "react";
-import axios from "axios";
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Label,
-  Row,
-} from 'reactstrap';
+import React, { Component } from 'react';
+import { Button, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, FormText,Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 
-class ProjectForm extends Component {
-  constructor(props){
+class ProjectFormModal extends Component {
+
+  constructor(props) {
     super(props);
     this.state = {
+      modal: false,
       name: '',
       description: '',
       tokenName: '',
@@ -39,11 +16,18 @@ class ProjectForm extends Component {
       subIndustryList: ''
     };
 
+    this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleIndustryChange = this.handleIndustryChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
+  toggle() {
+    this.setState({
+      modal: !this.state.modal,
+    });
+  }
+  
   handleChange(e) {
     const { name, value } = e.target;
     console.log("name", name, "value", value);
@@ -65,32 +49,30 @@ class ProjectForm extends Component {
     this.props.parentHandler(this.state.name, this.state.industry, this.state.subIndustry, this.state.tokenName, this.state.tokenSymbol)
   }
 
-  render(){
+  render() {
     const {name, description, industry, subIndustry, tokenName, tokenSymbol} = this.state;
-    return(
-      <div>
-      <Row>
-        <Col xs="12" md="6">
-          <Card>
-            <CardHeader>
-              <strong>New Project Form</strong>
-            </CardHeader>
-            <CardBody>
+    return (
+      <div className="animated fadeIn">
+        <Row>
+          <Col>
+          <Card className="text-white bg-primary text-center">
+            <CardBody onClick= {this.toggle}>
+              <blockquote className="card-bodyquote">
+                <p>Create new project</p>
+                <footer>+<i className="cui-tablet icons font-2xl d-block mt-4"></i></footer>
+              </blockquote>
+            </CardBody>
+          </Card>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+              <ModalHeader toggle={this.toggle}><strong>New Project Form</strong></ModalHeader>
+              <ModalBody>
               <Form className="form-horizontal">
-                <FormGroup row>
-                  <Col md="3">
-                    <Label>Static</Label>
-                  </Col>
-                  <Col xs="12" md="9">
-                    <p className="form-control-static">Username</p>
-                  </Col>
-                </FormGroup>
                 <FormGroup row>
                   <Col md="3">
                     <Label htmlFor="text-input">Project Name</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="text" value= {name} onChange={this.handleChange}  id="text-input" name="text-input" placeholder="Text" />
+                    <Input type="text" name="name" value= {name} onChange={this.handleChange}  id="text-input" placeholder="Text" />
                     <FormText color="muted">This is a help text</FormText>
                   </Col>
                 </FormGroup>
@@ -108,7 +90,7 @@ class ProjectForm extends Component {
                     <Label htmlFor="text-input">Token Name</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="text" name="tokenName" value= {tokenName} onChange={this.handleChange} id="text-input" name="text-input" placeholder="Text" />
+                    <Input type="text" name="tokenName" value= {tokenName} onChange={this.handleChange} id="text-input"  placeholder="Text" />
                     <FormText color="muted">This is a help text</FormText>
                   </Col>
                 </FormGroup>
@@ -117,7 +99,7 @@ class ProjectForm extends Component {
                     <Label htmlFor="text-input">Token Symbol</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="text" name="tokenSymbol" value= {tokenSymbol} onChange={this.handleChange} id="text-input" name="text-input" placeholder="Text" />
+                    <Input type="text" name="tokenSymbol" value= {tokenSymbol} onChange={this.handleChange} id="text-input"  placeholder="Text" />
                     <FormText color="muted">This is a help text</FormText>
                   </Col>
                 </FormGroup>
@@ -146,21 +128,21 @@ class ProjectForm extends Component {
                     <Label htmlFor="text-input">Sub Industry</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="text" name="subIndustry" value= {subIndustry} onChange={this.handleChange} id="text-input" name="text-input" placeholder="Text" />
+                    <Input type="text" name="subIndustry" value= {subIndustry} onChange={this.handleChange} id="text-input" placeholder="Text" />
                     <FormText color="muted">This is a help text</FormText>
                   </Col>
                 </FormGroup>
               </Form>
-            </CardBody>
-            <CardFooter>
-              <Button type="submit" onClick = {this.onSubmitForm} size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
-            </CardFooter>
-          </Card>
-        </Col>
-      </Row>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onClick = {this.onSubmitForm} >Create Project</Button>
+              </ModalFooter>
+            </Modal>
+          </Col>
+        </Row>
       </div>
-    )
+    );
   }
 }
 
-export default ProjectForm;
+export default ProjectFormModal;
