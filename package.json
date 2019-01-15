@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pm2 start ./kramaaServer/bin/www & webpack-dev-server --mode development --env.dev",
+    "dev": "pm2 start ./kramaaServer/bin/kramaaApp & webpack-dev-server --mode development --env.dev",
     "build": "webpack"
   },
   "author": "",
