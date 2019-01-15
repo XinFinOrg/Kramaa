@@ -44,11 +44,11 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, "./kramaaClient"),
-    port: 8080,
+    port: 4001,
     historyApiFallback: true,
     hotOnly: true,
     proxy: {
-      '/api/*': 'http://localhost:80'
+      '/api/*': 'http://localhost:5001'
     }
   }
 };

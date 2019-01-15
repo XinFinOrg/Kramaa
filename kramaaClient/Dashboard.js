@@ -125,6 +125,16 @@ class Dashboard extends Component {
             </CardBody>
           </Card>
         </Col>
+        <Col xs="12" sm="6" md="4">
+          <Card>
+            <CardHeader>
+              Thing Count
+            </CardHeader>
+            <CardBody>
+              {deviceCount}
+            </CardBody>
+          </Card>
+        </Col>
       </Row>
       <Row>
       <Col xs="12" sm="6" md="4">

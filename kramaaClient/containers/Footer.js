@@ -15,7 +15,7 @@ class Footer extends Component {
 
     return (
       <React.Fragment>
-        <span><a href="https://coreui.io">Copyright © 2019 Kramaa. All rights reserved.</a></span>
+        <span><a>Copyright © 2019 Kramaa. All rights reserved.</a></span>
         <span className="ml-auto">Powered by <a>Xinfin</a></span>
       </React.Fragment>
     );

@@ -33,12 +33,13 @@ class RegisterThingModal extends Component {
 
   onSubmitForm(e) {
     e.preventDefault();
-    this.props.parentHandler(
-      this.state.thingName,
-      this.state.thingDescription,
-      this.state.thingAttributes,
-      this.state.thingBrand,
-    )
+    
+    // this.props.parentHandler(
+    //   this.state.thingName,
+    //   this.state.thingDescription,
+    //   this.state.thingAttributes,
+    //   this.state.thingBrand,
+    // )
   }
 
   render() {
