@@ -31,8 +31,6 @@ class Layout extends Component {
   }
 
   render() {
-
-    console.log("Layout loaded");
     return (
       <div className="app">
         <AppHeader fixed>

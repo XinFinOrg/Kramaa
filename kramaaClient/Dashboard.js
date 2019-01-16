@@ -23,19 +23,33 @@ class Dashboard extends Component {
       loading: true
     };
 
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.renderProjectForm = this.renderProjectForm.bind(this);
-    this.renderProjectFormModal = this.renderProjectFormModal.bind(this);
     this.projectFormHandler = this.projectFormHandler.bind(this);
     this.thingFormHandler = this.thingFormHandler.bind(this);
     this.goToLogin = this.goToLogin.bind(this);
     this.goToProject = this.goToProject.bind(this);
+    this.projectModalToggler = React.createRef();
+    this.deviceModalToggler = React.createRef();
+    this.thingModalToggler = React.createRef();
+    this.renderProjectModal = this.renderProjectModal.bind(this);
+    this.renderDeviceModal = this.renderDeviceModal.bind(this);
+    this.renderThingModal = this.renderThingModal.bind(this);
     this.logout = this.logout.bind(this);
+  }
+
+  renderProjectModal(){
+    this.projectModalToggler.current.toggle();
+  }
+
+  renderDeviceModal(){
+    this.deviceModalToggler.current.toggle();
+  }
+
+  renderThingModal(){
+    this.thingModalToggler.current.toggle();
   }
 
   projectFormHandler(name, industry, subIndustry, tokenName, tokenSymbol) {
     axios.post("/api/dashboard/createProject", {name: name, industry: industry, subIndustry: subIndustry, tokenName: tokenName, tokenSymbol: tokenSymbol, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
-      console.log(res.data.status);
       if(res.data.status=="Project created successsfully"){
         this.setState({
           projectList: [...this.state.projectList, res.data.project],
@@ -68,15 +82,7 @@ class Dashboard extends Component {
     });
   }
 
-  renderProjectForm() {
-    this.setState({'projectForm': <ProjectForm parentHandler= {this.projectFormHandler}/>});
-  }
-  renderProjectFormModal() {
-    this.setState({'projectForm': <ProjectFormModal parentHandler= {this.projectFormHandler}/>});
-  }
-
   goToProject(uniqueId) {
-    console.log(uniqueId);
     this.props.history.push('/project/'+uniqueId);
   }
 
@@ -139,13 +145,37 @@ class Dashboard extends Component {
       </Row>
       <Row>
       <Col xs="12" sm="6" md="4">
-        <ProjectFormModal parentHandler= {this.projectFormHandler}/>
+        <Card className="text-white bg-primary text-center">
+          <CardBody onClick= {this.renderProjectModal}>
+            <blockquote className="card-bodyquote">
+              <p>Create new project</p>
+              <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
+            </blockquote>
+          </CardBody>
+        </Card>
+        <ProjectFormModal ref= {this.projectModalToggler} isClosed= "true" parentHandler= {this.projectFormHandler}/>
       </Col>
       <Col xs="12" sm="6" md="4">
-        <RegisterDeviceModal parentHandler= {this.projectFormHandler}/>
+        <Card className="text-white bg-primary text-center">
+          <CardBody onClick= {this.renderDeviceModal}>
+            <blockquote className="card-bodyquote">
+              <p>Add new device</p>
+              <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
+            </blockquote>
+          </CardBody>
+        </Card>
+        <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.projectFormHandler} />
       </Col>
       <Col xs="12" sm="6" md="4">
-          <RegisterThingModal parentHandler= {this.thingFormHandler}/>
+      <Card className="text-white bg-primary text-center">
+        <CardBody onClick= {this.renderThingModal}>
+          <blockquote className="card-bodyquote">
+            <p>Add new thing</p>
+            <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
+          </blockquote>
+        </CardBody>
+      </Card>
+          <RegisterThingModal ref= {this.thingModalToggler} parentHandler= {this.thingFormHandler}/>
       </Col>
       </Row>
       {projectForm}

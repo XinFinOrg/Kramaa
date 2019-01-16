@@ -3,7 +3,7 @@ var nodemailer = require('nodemailer');
 var ejs = require("ejs");
 var fs = require('fs');
 var transporter = nodemailer.createTransport({
-  host: 'mail002.dakghar.in',
+  host: 'SMTP.kramaa.com',
   port: 587,
   auth: nodemailerAuth
 });

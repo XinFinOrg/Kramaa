@@ -6,7 +6,7 @@ class ProjectFormModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
+      modal: true,
       name: '',
       description: '',
       tokenName: '',
@@ -22,6 +22,16 @@ class ProjectFormModal extends Component {
     this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
+  componentDidMount() {
+    if(this.props.isClosed=="true"){
+      console.log("Props",this.props.isOpen);
+      console.log("cLOSED MODAL");
+      this.setState({
+        modal: false
+      })
+    }
+  }
+
   toggle() {
     this.setState({
       modal: !this.state.modal,
@@ -30,13 +40,11 @@ class ProjectFormModal extends Component {
 
   handleChange(e) {
     const { name, value } = e.target;
-    console.log("name", name, "value", value);
     this.setState({ [name]: value });
   }
 
   handleIndustryChange(e) {
     const { name, value } = e.target;
-    console.log("name", name, "value", value);
     this.setState({ [name]: value });
     switch(value){
       case "1": console.log("1");
@@ -55,14 +63,6 @@ class ProjectFormModal extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col>
-          <Card className="text-white bg-primary text-center">
-            <CardBody onClick= {this.toggle}>
-              <blockquote className="card-bodyquote">
-                <p>Create new project</p>
-                <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
-              </blockquote>
-            </CardBody>
-          </Card>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
               <ModalHeader toggle={this.toggle}><strong>New Project Form</strong></ModalHeader>
               <ModalBody>

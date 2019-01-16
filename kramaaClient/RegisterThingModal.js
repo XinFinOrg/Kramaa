@@ -75,14 +75,6 @@ class RegisterThingModal extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col>
-            <Card className="text-white bg-primary text-center">
-              <CardBody onClick= {this.toggle}>
-                <blockquote className="card-bodyquote">
-                  <p>Add new thing</p>
-                  <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
-                </blockquote>
-              </CardBody>
-            </Card>
               <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}><strong>New Thing Registration </strong></ModalHeader>
                 <ModalBody>

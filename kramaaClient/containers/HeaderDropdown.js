@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Progress } from 'reactstrap';
-import {FaBell} from "react-icons/fa";
 
 const propTypes = {
   notif: PropTypes.bool,
@@ -38,7 +37,7 @@ class HeaderDropdown extends Component {
     return (
       <Dropdown nav className="d-md-down-none" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle nav>
-          <i><FaBell/></i><Badge pill color="danger">{itemsCount}</Badge>
+          <i className= "fa fa-bell-o"></i><Badge pill color="danger">{itemsCount}</Badge>
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem header tag="div" className="text-center"><strong>You have {itemsCount} notifications</strong></DropdownItem>
@@ -56,7 +55,7 @@ class HeaderDropdown extends Component {
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-          <DropdownItem><FaBell />User Profile</DropdownItem>
+          <DropdownItem><i className="fa fa-user"></i>User Profile</DropdownItem>
           <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
           <DropdownItem><i className="fa fa-user"></i> Manage Account</DropdownItem>
           <DropdownItem><i className="fa fa-wrench"></i> Organization Profile</DropdownItem>

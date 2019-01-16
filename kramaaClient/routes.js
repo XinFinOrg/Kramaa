@@ -6,6 +6,7 @@ const Footer = React.lazy(() => import('./containers/Footer'));
 const Profile = React.lazy(() => import('./Profile'));
 const Login = React.lazy(() => import('./Login'));
 const Projects = React.lazy(() => import('./Projects'));
+const ProjectFormModal = React.lazy(() => import('./ProjectFormModal'));
 import Register from "./Register";
 import ProjectPage from "./ProjectPage";
 import Invitation from "./Invitation";
@@ -15,6 +16,7 @@ const routes = [
   { path: '/projects', name: 'Projects', component: Projects},
   { path: '/project/:projectID', name: 'ProjectPage', component: ProjectPage},
   { path: '/dashboard', name: 'Dashboard', component: Dashboard},
+  { path: '/newProject', name: 'New Project', component: ProjectFormModal},
   { path: '/header', name: 'Header', component: Header },
   { path: '/footer', name: 'Footer', component: Footer},
   { path: '/invitation', name: 'Invitation', component: Invitation },

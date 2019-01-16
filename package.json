@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon start ./kramaaServer/bin/kramaaApp & webpack-dev-server --mode development --env.dev",
+    "dev": "webpack-dev-server --mode development --env.dev",
     "build": "webpack"
   },
   "author": "",

@@ -27,13 +27,10 @@ class Header extends Component {
       <AppSidebarToggler className="d-md-down-none" display="lg" />
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-            <NavLink href="/dashboard" default>Dashboard</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
             <Link to="/profile">Profile</Link>
           </NavItem>
           <NavItem className="px-3">
-            <NavLink href="/settings">Settings</NavLink>
+            <Link to = "/settings">Settings</Link>
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>

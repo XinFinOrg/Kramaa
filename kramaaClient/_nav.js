@@ -13,7 +13,7 @@ export default {
       children: [
         {
           name: 'Create Project',
-          url: '/dashboard',
+          url: '/newProject',
           icon: 'icon-puzzle',
         },
         {
