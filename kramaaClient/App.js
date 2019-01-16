@@ -10,8 +10,10 @@ import ProjectPage from "./ProjectPage";
 import Projects from "./Projects";
 import Invitation from "./Invitation";
 import Layout from "./containers/Layout";
-// import DefaultLayout from "./containers/index.js";
-// import DefaultHeader from "./containers/DefaultHeader.js";
+import '@coreui/icons/css/coreui-icons.css';
+import 'font-awesome/css/font-awesome.min.css';
+import 'simple-line-icons/css/simple-line-icons.css'
+
 import { BrowserRouter, Route, Link} from "react-router-dom";
 
 class App extends Component{

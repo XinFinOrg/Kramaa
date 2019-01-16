@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const thing = sequelize.define('device', {
+  const thing = sequelize.define('thing', {
     uniqueId:{
       allowNull:false,
       primaryKey: true,
@@ -22,24 +22,19 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
 
-    spec: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
     brand: {
       type: DataTypes.STRING,
       allowNull: true,
     },
 
-    urn: {
-      type: DataTypes.STRING,
+    uri: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },
 
-    metadata: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    associationStatus: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
 
     createdAt: {

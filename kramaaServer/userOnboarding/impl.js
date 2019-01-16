@@ -61,7 +61,7 @@ module.exports = {
         res.send({"status": "User already exists"});
       }
       else {
-        Promise.all([module.exports.createNewOrganization(req), module.exports.createNewClient(req.body.name, req.body.email, req.body.password), web3Handler.generateEthAddress()])
+        Promise.all([module.exports.createNewOrganization(req), module.exports.createNewClient(req.body.firstName, req.body.lastName, req.body.email, req.body.password), web3Handler.generateEthAddress()])
         .then(([createdOrganization, createdClient, createdEthAddress]) => {
           createdOrganization.addClient(createdClient);
           createdOrganization.setUserCurrencyAddress(createdEthAddress);
@@ -91,7 +91,8 @@ module.exports = {
     }).then(client => {
       if(client){
         client.password = generateHash(req.body.password);
-        client.name = req.body.name;
+        client.firstName = req.body.firstName;
+        client.lastName = req.body.lastName;
         client.save().then(client => {
           res.send({"status": "User registered"});
         })
@@ -139,7 +140,7 @@ module.exports = {
     });
   },
 
-  createNewClient: (name, email, password) => {
+  createNewClient: (firstName, lastName, email, password) => {
     return new Promise(async function (resolve, reject) {
       Client.findOne({
         where: {
@@ -147,7 +148,8 @@ module.exports = {
         }
       }).then(client => {
         // set the user's local credentials
-        client.name = name;
+        client.firstName = firstName;
+        client.lastName = lastName;
         client.emailVerified = true;
         client.password = generateHash(password);
         client.save().then(client => {

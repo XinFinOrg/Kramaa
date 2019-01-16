@@ -27,7 +27,7 @@ class ProjectFormModal extends Component {
       modal: !this.state.modal,
     });
   }
-  
+
   handleChange(e) {
     const { name, value } = e.target;
     console.log("name", name, "value", value);
@@ -59,7 +59,7 @@ class ProjectFormModal extends Component {
             <CardBody onClick= {this.toggle}>
               <blockquote className="card-bodyquote">
                 <p>Create new project</p>
-                <footer>+<i className="cui-tablet icons font-2xl d-block mt-4"></i></footer>
+                <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
               </blockquote>
             </CardBody>
           </Card>

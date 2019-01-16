@@ -8,7 +8,8 @@ class Invitation extends Component {
       super(props);
       this.state = {
         email: '',
-        name: '',
+        firstName: '',
+        lastName: '',
         password: '',
         userRegistered: '',
         organizationName: '',
@@ -49,7 +50,7 @@ class Invitation extends Component {
 
     onSubmitUserDetails(e) {
       e.preventDefault();
-      axios.post('/api/users/inviteUserRegistration', {'email': this.state.email, name: this.state.name, 'password': this.state.password})
+      axios.post('/api/users/inviteUserRegistration', {'email': this.state.email, 'firstName': this.state.firstName, 'lastName': this.state.lastName, 'password': this.state.password})
       .then(res => {
         if(res.data.status== "User registered"){
           this.setState({userRegistered: "true"})
@@ -57,7 +58,7 @@ class Invitation extends Component {
       });
     }
     render() {
-        const { email, name, password, userRegistered, repeatPassword } = this.state;
+        const { email, firstName, lastName, password, userRegistered, repeatPassword } = this.state;
         let render;
         if(userRegistered==""){
           render = <div className="app flex-row align-items-center">
@@ -74,7 +75,15 @@ class Invitation extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="name" value= {name} onChange={this.handleChange} placeholder="Username" autoComplete="username" />
+                        <Input type="text" name="firstName" value= {firstName} onChange={this.handleChange} placeholder="First Name" autoComplete="username" />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-user"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="lastName" value= {lastName} onChange={this.handleChange} placeholder="Last Name" autoComplete="username" />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">

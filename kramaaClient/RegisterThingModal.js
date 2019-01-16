@@ -11,12 +11,33 @@ class RegisterThingModal extends Component {
       thingName: '',
       thingDescription: '',
       thingAttributes: '',
-      thingBrand: ''
+      thingBrand: '',
+      ipfsHash: []
     };
 
     this.toggle = this.toggle.bind(this);
+    this.captureFile = this.captureFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+
+  }
+
+  captureFile(e) {
+    e.preventDefault();
+    for(var i=0; i<e.target.files.length; i++){
+      let file = e.target.files[i];
+      let reader = new window.FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onloadend = (res) => {
+        let content = ipfs.Buffer.from(res.target.result);
+        ipfs.add(content, (err, ipfsHash) => {
+          console.log(err, ipfsHash);
+          this.setState({
+            ipfsHash: [...this.state.ipfsHash, ipfsHash[0].hash]
+          })
+        })
+      }
+    }
   }
 
   toggle() {
@@ -26,25 +47,23 @@ class RegisterThingModal extends Component {
   }
   handleChange(e) {
     const { name, value } = e.target;
-    console.log("name", name, "value", value);
     this.setState({ [name]: value });
     this.forceUpdate();
   }
 
   onSubmitForm(e) {
     e.preventDefault();
-    
-    // this.props.parentHandler(
-    //   this.state.thingName,
-    //   this.state.thingDescription,
-    //   this.state.thingAttributes,
-    //   this.state.thingBrand,
-    // )
+    this.props.parentHandler(
+      this.state.thingName,
+      this.state.thingDescription,
+      this.state.ipfsHash,
+      this.state.thingBrand,
+    )
   }
+
 
   render() {
     let projectName;
-    console.log(this.props.projectName);
     if(this.props.projectName==null){
       projectName= "None";
     }
@@ -60,7 +79,7 @@ class RegisterThingModal extends Component {
               <CardBody onClick= {this.toggle}>
                 <blockquote className="card-bodyquote">
                   <p>Add new thing</p>
-                  <footer>+<i className="cui-tablet icons font-2xl d-block mt-4"></i></footer>
+                  <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
                 </blockquote>
               </CardBody>
             </Card>
@@ -100,7 +119,7 @@ class RegisterThingModal extends Component {
                       <Label htmlFor="file-multiple-input">Thing Attributes</Label>
                     </Col>
                     <Col xs="12" md="9">
-                      <Input type="file" id="file-multiple-input" name="thingAttributes" value= {thingAttributes} multiple />
+                      <Input type="file" id="file-multiple-input" name="thingAttributes" onChange={this.captureFile} multiple />
                       <FormText color="muted">Enter upto a maximum of 3 pictures of the thing</FormText>
                     </Col>
                   </FormGroup>

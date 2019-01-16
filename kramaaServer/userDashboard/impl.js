@@ -57,6 +57,12 @@ module.exports = {
     })
   },
 
+  createThing: (req, res) => {
+    req.client.getOrganization().then(organization=> {
+      
+    })
+  },
+
   inviteColleague: (req, res) => {
     req.client.getOrganization().then(createdOrganization => {
       Client.create({

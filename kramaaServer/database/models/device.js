@@ -37,6 +37,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
 
+    associationStatus: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+
+    transactionHash: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,

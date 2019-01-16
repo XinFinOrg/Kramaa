@@ -16,7 +16,7 @@ module.exports = {
     }, (err, data) => {
       console.log(err);
       var mailOptions = {
-        from: "verification@kraama.co",
+        from: "verification@kraama.com",
         to: recipientmail,
         subject: "Email Verification OTP",
         html: data

@@ -64,7 +64,7 @@ class RegisterDeviceModal extends Component {
             <CardBody onClick= {this.toggle}>
               <blockquote className="card-bodyquote">
                 <p>Add new device</p>
-                <footer>+<i className="cui-tablet icons font-2xl d-block mt-4"></i></footer>
+                <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
               </blockquote>
             </CardBody>
           </Card>

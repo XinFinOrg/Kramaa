@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Suspense} from "react";
 import { BrowserRouter, Route, Link} from "react-router-dom";
 import axios from "axios";
 import ProjectForm from './ProjectForm';
@@ -19,6 +19,7 @@ class Dashboard extends Component {
       organization: '',
       deviceCount: '',
       projectCount: '',
+      thingCount: '0',
       loading: true
     };
 
@@ -37,22 +38,22 @@ class Dashboard extends Component {
       console.log(res.data.status);
       if(res.data.status=="Project created successsfully"){
         this.setState({
-          projectList: [...this.state.projectList, res.data.project]
+          projectList: [...this.state.projectList, res.data.project],
+          projectCount: parseInt(this.state.projectCount)+1
         })
       }
     });
   }
 
-  thingFormHandler(name, industry, subIndustry, tokenName, tokenSymbol) {
+  thingFormHandler(thingName, thingDescription, thingAttributes, thingBrand) {
 
-    // axios.post("/api/dashboard/createThing", {name: name, industry: industry, subIndustry: subIndustry, tokenName: tokenName, tokenSymbol: tokenSymbol, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
-    //   console.log(res.data.status);
-    //   if(res.data.status=="Project created successsfully"){
-    //     this.setState({
-    //       projectList: [...this.state.projectList, res.data.project]
-    //     })
-    //   }
-    // });
+    axios.post("/api/dashboard/createThing", {thingName: thingName, thingDescription: thingDescription, thingAttributes: thingAttributes, thingBrand: thingBrand, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
+      if(res.data.status=="true"){
+        this.setState({
+          thingCount: parseInt(this.state.thingCount)+1
+        })
+      }
+    });
   }
 
   componentDidMount() {
@@ -107,30 +108,30 @@ class Dashboard extends Component {
       <Row>
         <Col xs="12" sm="6" md="4">
           <Card>
-            <CardHeader>
+            <CardHeader className="text-center">
               Project Count
             </CardHeader>
-            <CardBody>
+            <CardBody className="text-center">
               {projectCount}
             </CardBody>
           </Card>
         </Col>
         <Col xs="12" sm="6" md="4">
           <Card>
-            <CardHeader>
+            <CardHeader className="text-center">
               Device Count
             </CardHeader>
-            <CardBody>
+            <CardBody className="text-center">
               {deviceCount}
             </CardBody>
           </Card>
         </Col>
         <Col xs="12" sm="6" md="4">
           <Card>
-            <CardHeader>
+            <CardHeader className="text-center">
               Thing Count
             </CardHeader>
-            <CardBody>
+            <CardBody className="text-center">
               {deviceCount}
             </CardBody>
           </Card>

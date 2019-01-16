@@ -1,9 +1,10 @@
 var db = require('../database/models/index');
 var client = db.client;
 var Address = db.userCurrencyAddress;
+var Device = db.device;
 let Promise = require('bluebird');
 const Web3 = require('web3');
-var ws_provider = "http://localhost:8545";
+var ws_provider = "http://78.129.208.129:8545";
 var web3 = new Web3();
 var provider = new Web3.providers.HttpProvider(ws_provider);
 web3.setProvider(provider);
@@ -20,7 +21,7 @@ module.exports = {
       data: '0x'+ bytecode,
       })
       .send({
-        from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+        from: '0xbF456F32Fed09Ee730a4263DCc9c1B48E422Dfb5',
         gas: 4700000,
         gasPrice: '30000000000'
       }, function(error, transactionHash){
@@ -69,7 +70,7 @@ module.exports = {
       // });
       web3.eth.estimateGas(transaction).then(gasLimit => {
         transaction["gasLimit"] = gasLimit;
-        web3.eth.accounts.signTransaction(transaction, '0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d').then(result => {
+        web3.eth.accounts.signTransaction(transaction, '0xdf11b6debfa783dbc46afd4d753a6dc39caa785c1b3e749f087fc1d4f0552f6c').then(result => {
           web3.eth.sendSignedTransaction(result.rawTransaction).then(receipt => {
             resolve(receipt);
           });
@@ -85,20 +86,23 @@ module.exports = {
     const to = parseInt(tokenIdTo);
     console.log("from", from, "to", to);
     var tokenContractInstance = new web3.eth.Contract(tokenABI, tokenAddress);
-    let nonce = await web3.eth.getTransactionCount("0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1");
+    let nonce = await web3.eth.getTransactionCount("0xbF456F32Fed09Ee730a4263DCc9c1B48E422Dfb5");
     console.log("nonce",nonce);
     for(var i=from; i<=to;i++, nonce++) {
 
       var transaction = {
         "nonce": nonce,
         "to": tokenAddress,
-        "data": tokenContractInstance.methods.mintWithTokenURI("0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1", i, tokenURI, web3.utils.stringToHex(deviceURN)).encodeABI()
+        "data": tokenContractInstance.methods.mintWithTokenURI("0xbF456F32Fed09Ee730a4263DCc9c1B48E422Dfb5", i, tokenURI, web3.utils.stringToHex(deviceURN)).encodeABI()
       };
       let gasLimit = await web3.eth.estimateGas(transaction);
       transaction["gasLimit"] = gasLimit;
       let result = await web3.eth.accounts.signTransaction(transaction, privateKey);
       console.log("Adding", i);
-      batch.add(web3.eth.sendSignedTransaction.request(result.rawTransaction, receipt))
+      batch.add(web3.eth.sendSignedTransaction.request(result.rawTransaction, receipt.bind({
+        deviceURN: deviceURN,
+        tokenId: i
+      })));
     }
     batch.execute();
 
@@ -152,7 +156,13 @@ module.exports = {
 }
 
 function receipt(err, receipt) {
-  console.log(receipt);
+  Device.create({
+    urn: this.deviceURN,
+    tokenId: this.tokenId,
+    transactionHash: receipt
+  }).then(device => {
+    console.log("Device created successsfully");
+  })
 }
 
 function providerHandler(provider, ws_provider, web3) {

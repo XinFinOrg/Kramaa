@@ -50,6 +50,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
     });
 
+    organization.hasMany(models.thing, {
+      foreignKey: 'organization_id',
+      onDelete: 'CASCADE',
+    });
+
     organization.hasMany(models.client, {
       foreignKey: 'organization_id',
       onDelete: 'CASCADE',

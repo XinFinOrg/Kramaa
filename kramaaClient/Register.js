@@ -11,7 +11,8 @@ class Register extends Component {
         otp: '',
         submittedOTP: '',
         otpVerified: '',
-        name: '',
+        firstName: '',
+        lastName: '',
         password: '',
         repeatPassword: '',
         userRegistered: '',
@@ -54,7 +55,7 @@ class Register extends Component {
     onSubmitUserDetails(e) {
       e.preventDefault();
       if(this.state.password == this.state.repeatPassword){
-        axios.post('/api/users/userRegistration', {'email': this.state.email, 'name': this.state.name, 'password': this.state.password, 'organizationName': this.state.organizationName, 'addressLine1': this.state.addressLine1, 'addressLine2': this.state.addressLine2, 'addressLine3': this.state.addressLine3})
+        axios.post('/api/users/userRegistration', {'email': this.state.email, 'firstName': this.state.firstName, 'lastName': this.state.lastName, 'password': this.state.password, 'organizationName': this.state.organizationName, 'addressLine1': this.state.addressLine1, 'addressLine2': this.state.addressLine2, 'addressLine3': this.state.addressLine3})
         .then(res => {
           if(res.data.status== "New User"){
             this.setState({userRegistered: "true"})
@@ -66,7 +67,7 @@ class Register extends Component {
       }
     }
     render() {
-        const { email, submittedOTP, otpVerified, name, organizationName, addressLine1, addressLine2, addressLine3, password, repeatPassword, userRegistered } = this.state;
+        const { email, submittedOTP, otpVerified, firstName, lastName, organizationName, addressLine1, addressLine2, addressLine3, password, repeatPassword, userRegistered } = this.state;
         let render;
         if(this.state.otp==""){
           render = <div>
@@ -109,12 +110,20 @@ class Register extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="name" value= {name} onChange={this.handleChange} placeholder="Username" autoComplete="username" />
+                        <Input type="text" name="firstName" value= {firstName} onChange={this.handleChange} placeholder="First Name" autoComplete="username" />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
                             <i className="icon-user"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" name="lastName" value= {lastName} onChange={this.handleChange} placeholder="Last Name" autoComplete="username" />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-people"></i>
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input type="text" name="organizationName" value= {organizationName} onChange={this.handleChange} placeholder="Organization Name" autoComplete="Organization Name" />
@@ -122,7 +131,7 @@ class Register extends Component {
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
-                            <i className="icon-user"></i>
+                            <i className="icon-notebook"></i>
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input type="text" name="addressLine1" value= {addressLine1} onChange={this.handleChange} placeholder="AddressLine1" autoComplete="AddressLine1" />
@@ -130,7 +139,7 @@ class Register extends Component {
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
-                            <i className="icon-user"></i>
+                            <i className="icon-notebook"></i>
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input type="text" name="addressLine2" value= {addressLine2} onChange={this.handleChange} placeholder="AddressLine2" autoComplete="AddressLine2" />
@@ -138,7 +147,7 @@ class Register extends Component {
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
-                            <i className="icon-user"></i>
+                            <i className="icon-notebook"></i>
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input type="text" name="addressLine3" value= {addressLine3} onChange={this.handleChange} placeholder="AddressLine3" autoComplete="AddressLine3" />

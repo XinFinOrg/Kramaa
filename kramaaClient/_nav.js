@@ -1,13 +1,15 @@
+import {FaHome} from "react-icons/fa";
+
 export default {
   items: [
     {
       name: 'Home',
       url: '/dashboard',
-      icon: 'icon-speedometer'
+      icon: 'cui-home'
     },
     {
       name: 'Projects',
-      icon: 'icon-drop',
+      icon: 'cui-list',
       children: [
         {
           name: 'Create Project',
@@ -17,54 +19,61 @@ export default {
         {
           name: 'View Projects',
           url: '/projects',
-          icon: 'icon-puzzle',
+          icon: 'cui-magnifying-glass',
         }
       ]
     },
     {
       name: 'Devices',
       url: '/profile',
-      icon: 'icon-pencil',
+      icon: 'fa fa-microchip',
     },
     {
       name: 'Things',
       url: '/invitation',
-      icon: 'icon-pencil',
+      icon: 'fa fa-shopping-bag',
     },
     {
       name: 'Analytics',
       url: '/theme/typography',
-      icon: 'icon-pencil',
+      icon: 'cui-graph',
+      attributes: { disabled: true },
     },
     {
       name: 'Explorer',
       url: '/theme/typography',
-      icon: 'icon-pencil',
+      icon: 'fa fa-binoculars',
+      attributes: { disabled: true },
     },
     {
       name: 'Store',
       url: '/theme/typography',
-      icon: 'icon-pencil',
+      icon: 'fa fa-cart-plus',
+      attributes: { disabled: true },
     },
     {
       name: 'APIs',
       url: '/theme/typography',
-      icon: 'icon-pencil',
+      icon: 'fa fa-cart-plus',
+      attributes: { disabled: true },
     },
     {
       name: 'Settings',
       url: '/theme/typography',
-      icon: 'icon-pencil',
+      icon: 'cui-cog',
+      attributes: { disabled: true },
     },
     {
       name: 'Plans',
       url: '/theme/typography',
-      icon: 'icon-pencil',
+      icon: 'fa fa-shopping-cart',
+      attributes: { disabled: true },
     },
     {
       name: 'Support',
       url: '/theme/typography',
-      icon: 'icon-pencil',
+      icon: 'fa fa-support',
+      attributes: { disabled: true },
     }
   ]
 };

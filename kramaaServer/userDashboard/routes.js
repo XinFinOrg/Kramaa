@@ -9,6 +9,7 @@ var configAuth = require('../config');
 router.post('/projectList',isLoggedIn, impl.projectList);
 router.post('/getCounts',isLoggedIn, impl.getCounts);
 router.post('/createProject', isLoggedIn, impl.createProject);
+router.post('/createThing', isLoggedIn, impl.createThing);
 router.post('/inviteColleague', isLoggedIn, impl.inviteColleague);
 module.exports = router;
 
