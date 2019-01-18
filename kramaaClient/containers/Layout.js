@@ -23,7 +23,7 @@ const Header = React.lazy(() => import('./Header'));
 
 class Layout extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
-
+  
   signOut(e) {
     e.preventDefault()
     sessionStorage.clear();

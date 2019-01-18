@@ -1,13 +1,12 @@
 import React, {Component, Suspense} from "react";
 import { BrowserRouter, Route, Link} from "react-router-dom";
 import axios from "axios";
-import ProjectForm from './ProjectForm';
 import ProjectFormModal from './ProjectFormModal';
 import RegisterDeviceModal from './RegisterDeviceModal';
 import RegisterThingModal from './RegisterThingModal';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
-import { Badge, Card, CardBody, CardFooter, CardHeader, Col, Row, Collapse, Fade } from 'reactstrap';
+import { Badge, Card, CardBody, CardFooter, CardHeader, Col, Row } from 'reactstrap';
 class Dashboard extends Component {
   constructor(props){
     super(props);
@@ -19,11 +18,12 @@ class Dashboard extends Component {
       organization: '',
       deviceCount: '',
       projectCount: '',
-      thingCount: '0',
-      loading: true
+      thingCount: '',
+      loading: true,
     };
 
     this.projectFormHandler = this.projectFormHandler.bind(this);
+    this.mintTokenFormHandler = this.mintTokenFormHandler.bind(this);
     this.thingFormHandler = this.thingFormHandler.bind(this);
     this.goToLogin = this.goToLogin.bind(this);
     this.goToProject = this.goToProject.bind(this);
@@ -33,7 +33,19 @@ class Dashboard extends Component {
     this.renderProjectModal = this.renderProjectModal.bind(this);
     this.renderDeviceModal = this.renderDeviceModal.bind(this);
     this.renderThingModal = this.renderThingModal.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.logout = this.logout.bind(this);
+  }
+
+  componentWillMount() {
+    axios.post("/api/dashboard/projectList", {clientToken: sessionStorage.getItem("clientToken")})
+    .then(res=> {
+      for(let i=0; i<res.data.projects.length; i++){
+        this.setState({
+          projectList: [...this.state.projectList, res.data.projects[i].name],
+        })
+      }
+    });
   }
 
   renderProjectModal(){
@@ -52,17 +64,23 @@ class Dashboard extends Component {
     axios.post("/api/dashboard/createProject", {name: name, industry: industry, subIndustry: subIndustry, tokenName: tokenName, tokenSymbol: tokenSymbol, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
       if(res.data.status=="Project created successsfully"){
         this.setState({
-          projectList: [...this.state.projectList, res.data.project],
+          projectList: [...this.state.projectList, res.data.project.name],
           projectCount: parseInt(this.state.projectCount)+1
         })
       }
     });
   }
 
-  thingFormHandler(thingName, thingDescription, thingAttributes, thingBrand) {
+  mintTokenFormHandler(from, to, tokenURI, deviceURN, projectName) {
+    axios.post('/api/projects/mintNewToken', {projectAddress: this.state.projectAddress, tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, projectName: projectName, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
+    .then(res => {
+      deviceCount: parseInt(this.state.deviceCount)+1
+    })
+  }
 
+  thingFormHandler(thingName, thingDescription, thingAttributes, thingBrand) {
     axios.post("/api/dashboard/createThing", {thingName: thingName, thingDescription: thingDescription, thingAttributes: thingAttributes, thingBrand: thingBrand, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
-      if(res.data.status=="true"){
+      if(res.data.status==true){
         this.setState({
           thingCount: parseInt(this.state.thingCount)+1
         })
@@ -77,7 +95,8 @@ class Dashboard extends Component {
         loading:false,
         organization: res.data.organization,
         deviceCount: res.data.deviceCount,
-        projectCount: res.data.projectCount
+        projectCount: res.data.projectCount,
+        thingCount: res.data.thingsCount
       })
     });
   }
@@ -96,7 +115,7 @@ class Dashboard extends Component {
   }
 
   render(){
-    const { email, projectList, projectForm, organization, projectCount, deviceCount, loading} = this.state;
+    const { email, projectList, projectForm, organization, projectCount, deviceCount, thingCount, loading} = this.state;
     let dashboardRender;
     if(loading){
       dashboardRender=  <Col>
@@ -138,7 +157,7 @@ class Dashboard extends Component {
               Thing Count
             </CardHeader>
             <CardBody className="text-center">
-              {deviceCount}
+              {thingCount}
             </CardBody>
           </Card>
         </Col>
@@ -164,7 +183,7 @@ class Dashboard extends Component {
             </blockquote>
           </CardBody>
         </Card>
-        <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.projectFormHandler} />
+        <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.mintTokenFormHandler} projectList={projectList}/>
       </Col>
       <Col xs="12" sm="6" md="4">
       <Card className="text-white bg-primary text-center">

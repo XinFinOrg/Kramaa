@@ -1,12 +1,20 @@
 var db = require('../database/models/index');
 var Client = db.client;
 var Project = db.project;
+var Thing = db.thing;
 const mailer = require("../mailer/impl");
 const userOnboarding = require("../userOnboarding/impl");
 const contractHandler = require('../contractHandler/impl');
 const web3Handler = require('../web3Handler/ropstenHandler');
 
 module.exports = {
+
+  getUserInfo: (req, res) => {
+    res.send({
+      user: req.client
+    })
+  },
+
   projectList: (req, res) => {
     req.client.getOrganization().then(organization => {
       organization.getProjects().then(projects => {
@@ -59,7 +67,15 @@ module.exports = {
 
   createThing: (req, res) => {
     req.client.getOrganization().then(organization=> {
-      
+       Thing.create({
+         name: req.body.thingName,
+         description: req.body.thingDescription,
+         brand: req.body.thingBrand,
+         uri: req.body.thingAttributes
+       }).then(thing => {
+         organization.addThing(thing);
+         res.send({status: true, message: "Thing created successsfully"})
+       })
     })
   },
 
@@ -79,12 +95,15 @@ module.exports = {
     req.client.getOrganization().then(organization => {
       organization.getProjects().then(projects => {
         organization.getDevices().then(devices => {
-          res.send({
-            "organization": organization,
-            "client": req.client,
-            "projectCount": projects.length,
-            "deviceCount": devices.length
-          });
+          organization.getThings().then(things => {
+            res.send({
+              "organization": organization,
+              "client": req.client,
+              "projectCount": projects.length,
+              "deviceCount": devices.length,
+              "thingsCount": things.length
+            });
+          })
         })
       });
     });

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
@@ -14,6 +14,8 @@ class Login extends Component {
       this.handleChange = this.handleChange.bind(this);
       this.onSubmitForm = this.onSubmitForm.bind(this);
     }
+
+    loading = () => <div className="animated fadeIn pt-1 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
 
     handleChange(e) {
       const { name, value } = e.target;
@@ -34,6 +36,8 @@ class Login extends Component {
         return (
           <div className="app flex-row align-items-center">
             <Container>
+            <Suspense fallback={this.loading()}>
+            </Suspense>
               <Row className="justify-content-center">
                 <Col md="8">
                   <CardGroup>

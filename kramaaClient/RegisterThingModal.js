@@ -12,7 +12,8 @@ class RegisterThingModal extends Component {
       thingDescription: '',
       thingAttributes: '',
       thingBrand: '',
-      ipfsHash: []
+      ipfsHash: [],
+      button: true
     };
 
     this.toggle = this.toggle.bind(this);
@@ -24,7 +25,9 @@ class RegisterThingModal extends Component {
 
   captureFile(e) {
     e.preventDefault();
-    for(var i=0; i<e.target.files.length; i++){
+    let i;
+    let length=e.target.files.length;
+    for(i=0; i<e.target.files.length; i++){
       let file = e.target.files[i];
       let reader = new window.FileReader();
       reader.readAsArrayBuffer(file);
@@ -35,6 +38,11 @@ class RegisterThingModal extends Component {
           this.setState({
             ipfsHash: [...this.state.ipfsHash, ipfsHash[0].hash]
           })
+          if(this.state.ipfsHash.length==length){
+            this.setState({
+              button: false
+            })
+          }
         })
       }
     }
@@ -70,7 +78,7 @@ class RegisterThingModal extends Component {
     else{
       projectName = this.props.projectName;
     }
-    const {tokenIDTo, number,protocol, deviceType, registryID, sensor, deviceURN, thingName, thingDescription, thingAttributes, thingBrand} = this.state;
+    const {tokenIDTo, number,protocol, deviceType, registryID, sensor, deviceURN, thingName, thingDescription, thingAttributes, thingBrand, button} = this.state;
     return (
       <div className="animated fadeIn">
         <Row>
@@ -118,7 +126,7 @@ class RegisterThingModal extends Component {
                 </Form>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick = {this.onSubmitForm} >Add new Thing</Button>
+                  <Button color="primary" disabled={button} onClick = {this.onSubmitForm} >Add new Thing</Button>
                 </ModalFooter>
               </Modal>
           </Col>

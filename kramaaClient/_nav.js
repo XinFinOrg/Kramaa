@@ -25,12 +25,12 @@ export default {
     },
     {
       name: 'Devices',
-      url: '/profile',
+      url: '/devices',
       icon: 'fa fa-microchip',
     },
     {
       name: 'Things',
-      url: '/invitation',
+      url: '/things',
       icon: 'fa fa-shopping-bag',
     },
     {
@@ -59,9 +59,8 @@ export default {
     },
     {
       name: 'Settings',
-      url: '/theme/typography',
-      icon: 'cui-cog',
-      attributes: { disabled: true },
+      url: '/settings',
+      icon: 'cui-cog'
     },
     {
       name: 'Plans',

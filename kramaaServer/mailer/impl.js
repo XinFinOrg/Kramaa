@@ -42,7 +42,7 @@ module.exports = {
   },
 
   invitationMailer: function(req, recipientmail) {
-    var link = "http://" + req.get('host') + "/register";
+    var link = "http://" + req.get('host') + "/invitation?inviteEmail="+recipientmail;
     var mailOptions = {
       from: "invite@kramaa.co",
       to: recipientmail,

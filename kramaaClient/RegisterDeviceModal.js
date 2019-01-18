@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, FormText,Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 
 class RegisterDeviceModal extends Component {
@@ -13,13 +13,16 @@ class RegisterDeviceModal extends Component {
       number: 0,
       protocol: 'MQTT',
       registryID: '',
-      sensor: ''
+      sensor: '',
+      selectedProject: ''
     };
 
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
   }
+
+  loading = () => <div className="animated fadeIn pt-1 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
 
   toggle() {
     this.setState({
@@ -43,21 +46,22 @@ class RegisterDeviceModal extends Component {
       this.state.tokenIDTo,
       {protocol: this.state.protocol, registryID: this.state.registryID, sensor: this.state.sensor},
       this.state.deviceURN,
+      this.state.selectedProject
     )
   }
 
   render() {
-    let projectName;
-    console.log(this.props.projectName);
-    if(this.props.projectName==null){
-      projectName= "None";
+    const {tokenIDTo, selectedProject, number,protocol, deviceType, registryID, sensor, deviceURN} = this.state;
+    let dropdownRender = [<option key= "" name= "" value="">Select Project</option>];
+    let j;
+    for(var i=0;i<this.props.projectList.length; i++){
+      j= this.props.projectList[i];
+      dropdownRender.push(<option key= {j} name= {j} value={j}>{j}</option>);
     }
-    else{
-      projectName = this.props.projectName;
-    }
-    const {tokenIDTo, number,protocol, deviceType, registryID, sensor, deviceURN} = this.state;
+
     return (
       <div className="animated fadeIn">
+      <Suspense fallback={this.loading()}>
         <Row>
           <Col>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
@@ -66,10 +70,12 @@ class RegisterDeviceModal extends Component {
               <Form className="form-horizontal">
                 <FormGroup row>
                   <Col md="3">
-                    <Label>Project Name</Label>
+                    <Label htmlFor="select">Project Name</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <p className="form-control-static">{projectName}</p>
+                    <Input type="select" name= "selectedProject" value= {selectedProject} onChange={this.handleChange} id="select">
+                      {dropdownRender}
+                    </Input>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -83,19 +89,19 @@ class RegisterDeviceModal extends Component {
                 </FormGroup>
                 <FormGroup row>
                   <Col md="3">
-                    <Label htmlFor="text-input">Token ID From</Label>
+                    <Label htmlFor="text-input">Device Blockchain ID From</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="number" name="tokenIDFrom" disabled value= {this.props.totalSupply} placeholder="Text" />
+                    <Input type="number" name="tokenIDFrom" disabled readOnly value= {this.props.totalSupply} placeholder="Text" />
                     <FormText color="muted"></FormText>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col md="3">
-                    <Label htmlFor="text-input">Token ID To</Label>
+                    <Label htmlFor="text-input">Device Blockchain ID To</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="number" name="tokenIDTo" value= {tokenIDTo} placeholder="Text" />
+                    <Input type="number" name="tokenIDTo" readOnly value= {tokenIDTo} placeholder="Text" />
                     <FormText color="muted"></FormText>
                   </Col>
                 </FormGroup>
@@ -161,6 +167,7 @@ class RegisterDeviceModal extends Component {
             </Modal>
           </Col>
         </Row>
+      </Suspense>
       </div>
     );
   }

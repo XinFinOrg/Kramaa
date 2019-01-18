@@ -21,12 +21,13 @@ app.use('/api/users', require('./userOnboarding/routes'));
 app.use('/api/dashboard', require('./userDashboard/routes'));
 app.use('/api/projects', require('./projectHandler/routes'));
 app.use('/api/devices', require('./deviceHandler/routes'));
+app.use('/api/things', require('./thingHandler/routes'));
 
 app.use(express.static(path.resolve(__dirname, '..','dist')));
 app.use(express.static(path.resolve(__dirname, '..','kramaaClient/assets')));
-// app.get('*', function(req, res) {
-//   res.sendFile(path.resolve(__dirname, '..', 'dist/index.html'));
-// });
+app.get('*', function(req, res) {
+  res.sendFile(path.resolve(__dirname, '..', 'dist/index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

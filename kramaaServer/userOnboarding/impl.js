@@ -170,6 +170,27 @@ module.exports = {
         resolve(createdOrganization);
       });
     });
+  },
+
+  isLoggedIn: (req, res) => {
+    var token = req.body.clientToken;
+    // JWT enabled login strategy for end user
+    jwt.verify(token, configAuth.jwtAuthKey.secret, function (err, decoded) {
+      if (err) {
+        console.log(err);
+        return res.send({ status: false, message: "please login again" })
+      } else {
+        Client.findOne({
+          where: {
+            uniqueId: decoded.clientId
+          }
+        }).then(client => {
+          res.send({
+            status: true
+          })
+        });
+      }
+    });
   }
 
 }

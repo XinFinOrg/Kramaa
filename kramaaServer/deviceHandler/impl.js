@@ -7,5 +7,15 @@ module.exports = {
       urn: deviceURN,
       transactionHash: transactionHash
     })
+  },
+
+  deviceList: (req, res) => {
+    req.client.getOrganization().then(organization => {
+      organization.getDevices().then(devices => {
+        res.send({
+          deviceList: devices
+        });
+      });
+    });
   }
 }

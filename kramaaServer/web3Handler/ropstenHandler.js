@@ -2,53 +2,70 @@ var db = require('../database/models/index');
 var client = db.client;
 var Address = db.userCurrencyAddress;
 var Device = db.device;
+var Project = db.project;
 let Promise = require('bluebird');
 const Web3 = require('web3');
-var ws_provider = "http://78.129.208.129:8545";
+var config = require('../config');
+var ws_provider = config.testnetEndpoint;
 var web3 = new Web3();
 var provider = new Web3.providers.HttpProvider(ws_provider);
 web3.setProvider(provider);
 // providerHandler(provider, ws_provider, web3);
-var tokenABI = [{"constant":true,"inputs":[{"name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"mintingFinished","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"},{"name":"deviceURN","type":"bytes32"}],"name":"mint","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"unpause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"account","type":"address"}],"name":"isPauser","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"deviceURN","type":"bytes32"}],"name":"getDeviceInfo","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"paused","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renouncePauser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"_urnMapping","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"deviceURN","type":"bytes32"},{"name":"uri","type":"string"}],"name":"addThing","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"account","type":"address"}],"name":"addPauser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"pause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"account","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"},{"name":"tokenURI","type":"string"},{"name":"deviceURN","type":"bytes32"}],"name":"mintWithTokenURI","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"account","type":"address"}],"name":"isMinter","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"thingURI","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"PauserAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"PauserRemoved","type":"event"},{"anonymous":false,"inputs":[],"name":"MintingFinished","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"MinterAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"approved","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"operator","type":"address"},{"indexed":false,"name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"}];
+var tokenABI = config.tokenABI;
 var myContract = new web3.eth.Contract(tokenABI);
 
 const registryABI = require('../contractHandler/Registry/RegistryContractABI');
 module.exports = {
 
   deployContract: (abi, bytecode) => {
-    return new Promise(function(resolve, reject) {
-      myContract.deploy({
-      data: '0x'+ bytecode,
-      })
-      .send({
-        from: '0xbF456F32Fed09Ee730a4263DCc9c1B48E422Dfb5',
-        gas: 4700000,
-        gasPrice: '30000000000'
-      }, function(error, transactionHash){
-      })
-      .on('error', function(error){
-        reject(error);
-      })
-      .on('transactionHash', function(transactionHash){
-      })
-      .on('receipt', function(receipt){
-        console.log(receipt.contractAddress) // contains the new contract address
-      })
-      .once('confirmation', function(confirmationNumber, receipt){
-        console.log(confirmationNumber, receipt);
-        resolve({contractAddress: receipt.contractAddress, transactionHash: receipt.transactionHash})
-      })
-      .then(function(newContractInstance){
-        // console.log(newContractInstance.options.address) // instance with the new contract address
+    return new Promise(async (resolve, reject) => {
+      // myContract.deploy({
+      // data: '0x'+ bytecode,
+      // })
+      // .send({
+      //   from: config.testnetFaucetAddress,
+      //   gas: 4700000,
+      //   gasPrice: '30000000000'
+      // }, function(error, transactionHash){
+      // })
+      // .on('error', function(error){
+      //   reject(error);
+      // })
+      // .on('transactionHash', function(transactionHash){
+      // })
+      // .on('receipt', function(receipt){
+      //   console.log(receipt.contractAddress) // contains the new contract address
+      // })
+      // .once('confirmation', function(confirmationNumber, receipt){
+      //   console.log(confirmationNumber, receipt);
+      //   resolve({contractAddress: receipt.contractAddress, transactionHash: receipt.transactionHash})
+      // })
+      // .then(function(newContractInstance){
+      //   // console.log(newContractInstance.options.address) // instance with the new contract address
+      // });
+      var transaction = {
+        from: config.testnetFaucetAddress,
+        data: '0x'+bytecode,
+        gas: 4700000
+      };
+
+      web3.eth.estimateGas(transaction).then(gasLimit => {
+        transaction["gasLimit"] = gasLimit;
+        web3.eth.accounts.signTransaction(transaction, config.testnetFaucetPrivateKey).then(result => {
+          web3.eth.sendSignedTransaction(result.rawTransaction).then(receipt => {
+            resolve({contractAddress: receipt.contractAddress, transactionHash: receipt.transactionHash})
+          });
+        });
       });
+
     });
   },
 
   addNewProject: (contractAddress, name, description, tokenName, tokenSymbol, organizationName) => {
     return new Promise((resolve, reject) => {
-      let registryContractInstance = new web3.eth.Contract(registryABI, "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab");
+      let registryContractInstance = new web3.eth.Contract(registryABI, config.registryContractAddress);
       var transaction = {
-        "to": "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab",
+        "to": config.registryContractAddress,
         "data": registryContractInstance.methods.addNewProject(
           contractAddress,
           web3.utils.stringToHex(name),
@@ -56,52 +73,45 @@ module.exports = {
           web3.utils.stringToHex(tokenName),
           web3.utils.stringToHex(tokenSymbol),
           web3.utils.stringToHex(organizationName)
-        ).encodeABI()
+        ).encodeABI(),
+        "gasLimit": 3000000
       };
-      // registryContractInstance.methods.addNewProject(
-      //   contractAddress,
-      //   web3.utils.stringToHex(name),
-      //   web3.utils.stringToHex(description),
-      //   web3.utils.stringToHex(tokenName),
-      //   web3.utils.stringToHex(tokenSymbol),
-      //   web3.utils.stringToHex(organizationName)
-      // ).send({"from": "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1", "gas": 3000000}).then(res => {
-      //   console.log(res);
-      // });
-      web3.eth.estimateGas(transaction).then(gasLimit => {
-        transaction["gasLimit"] = gasLimit;
-        web3.eth.accounts.signTransaction(transaction, '0xdf11b6debfa783dbc46afd4d753a6dc39caa785c1b3e749f087fc1d4f0552f6c').then(result => {
+
+      // web3.eth.estimateGas(transaction).then(gasLimit => {
+        // transaction["gasLimit"] = gasLimit;
+        web3.eth.accounts.signTransaction(transaction, config.testnetFaucetPrivateKey).then(result => {
           web3.eth.sendSignedTransaction(result.rawTransaction).then(receipt => {
             resolve(receipt);
           });
         });
-      });
+      // });
     });
   },
 
-  mintNewToken: async (privateKey, tokenIdFrom, tokenIdTo, tokenURI, deviceURN, tokenAddress) => {
+  mintNewToken: async (privateKey, tokenIdFrom, tokenIdTo, tokenURI, deviceURN, tokenAddress, projectName) => {
     // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
     var batch = new web3.BatchRequest();
     const from = parseInt(tokenIdFrom);
     const to = parseInt(tokenIdTo);
     console.log("from", from, "to", to);
     var tokenContractInstance = new web3.eth.Contract(tokenABI, tokenAddress);
-    let nonce = await web3.eth.getTransactionCount("0xbF456F32Fed09Ee730a4263DCc9c1B48E422Dfb5");
+    let nonce = await web3.eth.getTransactionCount(config.testnetFaucetAddress);
     console.log("nonce",nonce);
     for(var i=from; i<=to;i++, nonce++) {
 
       var transaction = {
         "nonce": nonce,
         "to": tokenAddress,
-        "data": tokenContractInstance.methods.mintWithTokenURI("0xbF456F32Fed09Ee730a4263DCc9c1B48E422Dfb5", i, tokenURI, web3.utils.stringToHex(deviceURN)).encodeABI()
+        "data": tokenContractInstance.methods.mintWithTokenURI(config.testnetFaucetAddress, i, tokenURI, web3.utils.stringToHex(deviceURN)).encodeABI()
       };
-      let gasLimit = await web3.eth.estimateGas(transaction);
-      transaction["gasLimit"] = gasLimit;
+      // let gasLimit = await web3.eth.estimateGas(transaction);
+      transaction["gasLimit"] = 300000;
       let result = await web3.eth.accounts.signTransaction(transaction, privateKey);
       console.log("Adding", i);
       batch.add(web3.eth.sendSignedTransaction.request(result.rawTransaction, receipt.bind({
         deviceURN: deviceURN,
-        tokenId: i
+        tokenId: i,
+        projectName: projectName
       })));
     }
     batch.execute();
@@ -161,7 +171,17 @@ function receipt(err, receipt) {
     tokenId: this.tokenId,
     transactionHash: receipt
   }).then(device => {
-    console.log("Device created successsfully");
+    Project.findOne({
+      where: {
+        name: this.projectName
+      }
+    }).then(project => {
+      project.getOrganization().then(organization => {
+        project.addDevice(device);
+        organization.addDevice(device);
+        console.log("Device created successsfully");
+      })
+    })
   })
 }
 

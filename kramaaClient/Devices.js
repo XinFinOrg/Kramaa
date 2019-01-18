@@ -11,84 +11,55 @@ class Devices extends Component {
     this.state = {
       email: '',
       name: '',
-      projectList: [],
-      projectForm: '',
+      deviceList: [],
       organization: ''
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.renderProjectForm = this.renderProjectForm.bind(this);
-    this.projectFormHandler = this.projectFormHandler.bind(this);
-    this.goToLogin = this.goToLogin.bind(this);
-    this.goToProject = this.goToProject.bind(this);
-    this.logout = this.logout.bind(this);
+    this.goToDevice = this.goToDevice.bind(this);
   }
 
-  projectFormHandler(name, industry, subIndustry, tokenName, tokenSymbol) {
-    axios.post("/api/dashboard/createProject", {name: name, industry: industry, subIndustry: subIndustry, tokenName: tokenName, tokenSymbol: tokenSymbol, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
-      console.log(res.data.status);
-      if(res.data.status=="Project created successsfully"){
-        this.setState({
-          projectList: [...this.state.projectList, res.data.project]
-        })
-      }
-    });
-  }
 
   componentDidMount() {
-    axios.post("/api/dashboard/projectList", {clientToken: sessionStorage.getItem("clientToken")})
+    axios.post("/api/devices/deviceList", {clientToken: sessionStorage.getItem("clientToken")})
     .then(res=> {
-      this.setState({"email": res.data.client.email, projectList: res.data.projects, organization: res.data.organization})
-      console.log(res.data.projects[0].uniqueId);
+      this.setState({
+        deviceList: res.data.deviceList
+      })
     });
   }
 
-  renderProjectForm() {
-    this.setState({'projectForm': <ProjectForm parentHandler= {this.projectFormHandler}/>});
-  }
 
-  goToProject(uniqueId) {
+  goToDevice(uniqueId) {
     console.log(uniqueId);
-    this.props.history.push('/project/'+uniqueId);
-  }
-
-  goToLogin() {
-    this.props.history.push('/login');
-  }
-
-  logout() {
-    sessionStorage.clear();
-    this.props.history.push('/');
+    this.props.history.push('/device/'+uniqueId);
   }
 
   render(){
-    const { email, projectList, projectForm, organization} = this.state;
+    const { email, deviceList, organization} = this.state;
     const columns = [{
-      Header: 'Project ID',
+      Header: 'Device ID',
       accessor: 'uniqueId'
     }, {
-      Header: 'Project Name',
-      accessor: 'name',
+      Header: 'Device URN',
+      accessor: 'urn',
     }, {
-      Header: 'Industry',
-      accessor: 'industry'
+      Header: 'Device Blockchain ID',
+      accessor: 'tokenId'
     }, {
-      Header: 'Sub Industry',
-      accessor: 'subIndustry'
+      Header: 'Association Status',
+      accessor: 'associationStatus',
+      Cell: ({value}) => String(value)
     }, {
-      Header: 'Token Symbol',
-      accessor: 'tokenSymbol'
-    },  {
-      Header: 'Token Name',
-      accessor: 'tokenName'
-    },  {
+      Header: 'Transaction Hash',
+      accessor: 'transactionHash'
+    }, {
       Header: 'Action',
-      Cell: ({ row }) => (<Button block onClick={(e) => this.goToProject(row.uniqueId)} color="primary">View</Button>)
+      Cell: ({ row }) => (<Button block onClick={(e) => this.goToDevice(row.uniqueId)} color="primary">View</Button>)
     }];
-    console.log(projectList);
     return(
         <ReactTable
-          data={projectList}
+          data={deviceList}
           columns={columns}
           onFetchData={this.fetchData}
           noDataText="Not available"

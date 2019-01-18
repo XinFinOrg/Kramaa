@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 var impl = require('./impl');
 
+router.post('/isLoggedIn', impl.isLoggedIn);
 router.post('/userOnboarding', impl.userOnboarding);
 router.post('/userRegistration', impl.userRegistration);
 router.post('/inviteUserRegistration', impl.inviteUserRegistration);

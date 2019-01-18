@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Suspense} from "react";
 import { BrowserRouter, Route, Link} from "react-router-dom";
 import axios from "axios";
 import RegisterDeviceModal from "./RegisterDeviceModal";
@@ -16,19 +16,21 @@ class ProjectPage extends Component {
       deviceForm: '',
     };
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.renderNewDeviceForm = this.renderNewDeviceForm.bind(this);
     this.mintTokenFormHandler = this.mintTokenFormHandler.bind(this);
+    this.deviceModalToggler = React.createRef();
+    this.renderDeviceModal = this.renderDeviceModal.bind(this);
+  }
+  loading = () => <div className="animated fadeIn pt-1 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
+
+  renderDeviceModal(){
+    this.deviceModalToggler.current.toggle();
   }
 
-  mintTokenFormHandler(from, to, tokenURI, deviceURN) {
-    axios.post('/api/projects/mintNewToken', {projectAddress: this.state.projectAddress, tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
+  mintTokenFormHandler(from, to, tokenURI, deviceURN, projectName) {
+    axios.post('/api/projects/mintNewToken', {projectAddress: this.state.projectAddress, tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, projectName: projectName, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
     .then(res => {
       console.log(res);
     })
-  }
-
-  renderNewDeviceForm() {
-    this.setState({'deviceForm': <MintTokenForm parentHandler = {this.mintTokenFormHandler} totalSupply= {parseInt(this.state.totalSupply)+1}/>});
   }
 
   componentDidMount() {
@@ -47,6 +49,7 @@ class ProjectPage extends Component {
     const {projectName, projectID, projectIndustry, projectSubIndustry, projectAddress, deviceForm, totalSupply} = this.state;
     return(
       <div>
+      <Suspense fallback={this.loading()}>
         <Link to="/projects"><Button color="primary">Back to Projects</Button></Link><br /><br/>
         <Col sm="12" xl="6">
           <Card>
@@ -65,8 +68,17 @@ class ProjectPage extends Component {
           </Card>
         </Col>
         <Col xs="12" sm="6" md="4">
-          <RegisterDeviceModal parentHandler= {this.mintTokenFormHandler} totalSupply= {parseInt(this.state.totalSupply)+1} projectName = {projectName}/>
+        <Card className="text-white bg-primary text-center">
+          <CardBody onClick= {this.renderDeviceModal}>
+            <blockquote className="card-bodyquote">
+              <p>Add new device</p>
+              <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
+            </blockquote>
+          </CardBody>
+        </Card>
+        <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.mintTokenFormHandler} totalSupply= {parseInt(this.state.totalSupply)+1} projectList = {[projectName]} />
         </Col>
+      </Suspense>
       </div>
     )
   }

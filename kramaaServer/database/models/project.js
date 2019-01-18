@@ -3,13 +3,14 @@ module.exports = (sequelize, DataTypes) => {
   const project = sequelize.define('project', {
     uniqueId:{
       allowNull:false,
-      primaryKey: true,
       type:DataTypes.UUID,
       defaultValue: DataTypes.UUIDV1,
     },
     name: {
       type: DataTypes.STRING,
       allowNull: true,
+      primaryKey: true,
+      unique: true
     },
 
     industry: {
@@ -71,6 +72,10 @@ module.exports = (sequelize, DataTypes) => {
     project.hasMany(models.device, {
       foreignKey: 'project_id',
       onDelete: 'CASCADE',
+    });
+
+    project.belongsTo(models.organization, {
+      foreignKey: 'organization_id'
     });
   };
   return project;

@@ -2,14 +2,14 @@ import React, {Component} from "react";
 import { BrowserRouter, Route, Link} from "react-router-dom";
 import axios from "axios";
 import ColleagueForm from './ColleagueForm';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import {Col, Card, CardBody, CardHeader, ListGroup, ListGroupItem, Button} from 'reactstrap';
 
 class Profile extends Component {
   constructor(props){
     super(props);
     this.state = {
+      user: '',
       email: '',
-      name: '',
       projectList: [],
       colleagueForm: '',
       organization: ''
@@ -21,10 +21,23 @@ class Profile extends Component {
     this.logout = this.logout.bind(this);
   }
 
+
   componentDidMount() {
+    axios.post("/api/dashboard/getUserInfo", {clientToken:  sessionStorage.getItem("clientToken")})
+    .then(res => {
+      this.setState({
+        user: res.data.user
+      })
+    })
+
     axios.post("/api/dashboard/projectList", {clientToken: sessionStorage.getItem("clientToken")})
     .then(res=> {
-      this.setState({"email": res.data.client.email, projectList: res.data.projects, organization: res.data.organization})
+      this.setState({"email": res.data.client.email, organization: res.data.organization})
+      for(let i=0; i<res.data.projects.length; i++){
+        this.setState({
+          projectList: [...this.state.projectList, res.data.projects[i].name],
+        })
+      }
     });
   }
 
@@ -42,26 +55,26 @@ class Profile extends Component {
   }
 
   render(){
-    const { email, projectList, colleagueForm, organization} = this.state;
-
-    let projectRender;
-    if(projectList.length>0){
-      projectRender = <BootstrapTable data={projectList} striped hover>
-          <TableHeaderColumn isKey dataField="name">Project Name </TableHeaderColumn>
-          <TableHeaderColumn dataField="tokenName">Token Name </TableHeaderColumn>
-          <TableHeaderColumn dataField="tokenSymbol">Token Symbol </TableHeaderColumn>
-      </BootstrapTable>;
-    }
-    else{
-      projectRender = <div> No Projects Yet </div>
-    }
+    const { projectList, colleagueForm, organization, user} = this.state;
     return(
       <div>
-        Welcome to Kramaa Dashboard <br/> <br/>
-        Your organization: {organization.organizationName} <br/>
-        <button onClick= {this.renderColleagueForm}>Add your colleagues </button>
+        <Col sm="12" xl="6">
+          <Card>
+            <CardHeader>
+              <i className="fa fa-align-justify"></i><strong>Profile Info</strong>
+            </CardHeader>
+            <CardBody>
+              <ListGroup>
+                <ListGroupItem>Organization Name: {organization.organizationName}</ListGroupItem>
+                <ListGroupItem>Organization ID: {organization.uniqueId}</ListGroupItem>
+                <ListGroupItem>First Name: {user.firstName}</ListGroupItem>
+                <ListGroupItem>Last Name: {user.lastName}</ListGroupItem>
+              </ListGroup>
+            </CardBody>
+          </Card>
+        </Col>
+        <Button onClick= {this.renderColleagueForm}>Add your colleagues </Button>
         {colleagueForm} <br />
-        Your projects: {projectRender} <br/>
       </div>
     )
   }
