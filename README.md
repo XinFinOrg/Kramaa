@@ -22,23 +22,33 @@ d) Expensive infrastructure & high maintenance cost due to centralized clouds, l
 # How is Kramaa Useful
 
 IoT can be secured with cryptography, tamper-proof form factors & blockchain back-end
+
 Secure blockchain with IoT also opens up entirely new industries and business models, such as proximity-based commerce, sharing economy, automation & M2M communication.
 
 Benefits of convergence
 
 Protocol-based trust distributed across a network, managed & secured through encoded and permissioned access, smart contracts, and cryptography. 
+
 Cost benefits: Instead of collecting, storing, and managing all IoT data in centralized hubs, a distributed architecture can help mitigate single points of attack or failure, offer a ‘single version of the truth’ through shared, immutable records, and reduce costs in infrastructure, reconciliation, and management. 
+
 Offer’s IoT a level of interoperability, transparency & security currently absent from today’s architectures 
 
 Advantages
 
 Register unique strong cryptographic identity and record transaction on the blockchain
+
 Transfer of custody as immutable transactions on a ledger
+
 Unique ownership of a trading item across the supply chain
+
 Compliance with track & trace regulations
+
 Greater transparency and consumer trust
+
 Faster settlement of payments
+
 Increased efficiency in trading of goods
+
 Reduced reconciliation costs in inventory & vendor management
 
 # Value Proposition
