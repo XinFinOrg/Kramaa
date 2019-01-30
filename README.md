@@ -45,18 +45,18 @@ Reduced reconciliation costs in inventory & vendor management
 
 Cost Reductions - 
 
-Pool data across value chain
+Pool data across value chain,
 Automate Transactions
 
 Revenue Enhancements - 
 
-Minimize Lost Sales
-Monetize utilization of idle assets
+Minimize Lost Sales,
+Monetize utilization of idle assets,
 Monetize data through market place
 
 Risk Mitigation -
 
-Ensure compliance & security
+Ensure compliance & security,
 Protect brand reputation
 
 # What you can build on Kramaa
