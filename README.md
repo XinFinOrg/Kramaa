@@ -71,6 +71,11 @@ All directory structures as per the following standards:
   - kramaaClient bears the code for the React front end
   - kramaaServer bears the code for the Node.js Express backend
 
+# Platform Diagram
+
+
+
+
 
 
 
