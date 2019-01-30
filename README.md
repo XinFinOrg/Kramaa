@@ -71,6 +71,12 @@ Protect brand reputation
 
 # What you can build on Kramaa
 
+we offer a open API to build applications leveraging the registry platform
+
+Industry - Pharmaceuticals, Smart City, Art and Collectibles, Fashion and Luxury, Food & Beverages, Logistics
+
+Use Cases - Digital Identity, Authentication, Track and Trace, Anti- Counterfeit, Tokenization and Automation
+
 # Technical Overview
 
 Express Framework of Node.js for backend support.
@@ -100,13 +106,6 @@ To submit your comments or feedback please reach us here:
 
 Forum: 
 Slack: https://xinfin-public.slack.com/
-
-
-
-
-
-
-
 
 Terms & Condition for Commercial usage
 
