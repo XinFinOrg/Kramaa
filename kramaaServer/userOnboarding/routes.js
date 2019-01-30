@@ -9,4 +9,5 @@ router.post('/inviteUserRegistration', impl.inviteUserRegistration);
 router.post('/invitedUserInfo', impl.invitedUserInfo);
 router.post('/userLogin', impl.userLogin);
 router.post('/verifyOTP', impl.verifyOTP);
+router.post('/forgotpassword', impl.forgotPassword);
 module.exports = router;

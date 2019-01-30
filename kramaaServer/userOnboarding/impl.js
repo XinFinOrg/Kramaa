@@ -191,6 +191,24 @@ module.exports = {
         });
       }
     });
+  },
+
+  forgotPassword: (req, res) => {
+    let email = req.body.email;
+    Client.findOne({
+      where: {
+        email: email
+      }
+    }).then(client => {
+      mailer.sendForgotPassword(email, client.uniqueId);
+      res.send({
+        status: true
+      });
+    });
+  },
+
+  changePassword: (req, res) => {
+    let email= req.body.email
   }
 
 }
