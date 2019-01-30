@@ -95,7 +95,7 @@ Slack: https://xinfin-public.slack.com/
 
 Terms & Condition for Commercial usage
 
-Copyright 2019, My Contract. https://www.kramaa.com
+Copyright 2019, Kramaa. https://www.kramaa.com
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 
