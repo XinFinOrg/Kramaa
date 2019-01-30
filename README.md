@@ -73,7 +73,7 @@ All directory structures as per the following standards:
 
 # Platform Diagram
 
-
+Kramaa/iot-platform.png
 
 
 
