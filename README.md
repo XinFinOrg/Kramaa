@@ -4,23 +4,65 @@ Introduction
 
 IoT enabled Blockchain Platform: Securely integrate physical assets &amp; IoT devices through blockchain, smart contracts &amp; firmware for creating digital identity, provenance, authentication, e-commerce, supply chain &amp; finance.
 
-Current Problem Statement
+# Current Problem Statement
 
+Counterfeiting is a trillion dollar market and growing faster than rate of global trade. This creates a threat to Intellectual property based business models. The risks are increasing rapidly with online trade. Mature economies like USA and Western Europe bear brunt of the damage
 
+Supply chain Challenges - Everyday countless products travel through a complicated supply chain of manufacturers, shippers, distributors & retailers before they reach the consumer. Consumer want transparency on manufacturing process, environmental concerns, exploitation of resources, unethical practices or abnormal wastage. Businesses want to know if there was any pilferage, adulteration, modification during the journey. Temperature controlled supply chain for pharma & food pose further challenges. Traceability & accountability are key challenges for supply chain with a growing demand for transparency.Currently IoT, M2M technology & cloud based applications offer pinpoint location, monitoring & alerts but suffer from several limitations stemming from a centralized architecture. Blockchain applications including automating payment & settlement, counterfeit detection, Smart Contracts, Risk & Compliance Management, and Product Traceability
 
-Light Paper
+# IoT Devices - 
 
-Open Registry for IoT - Creating an immutable and interoperable digital identity for real world things
+Internet of Things or IoT represents Billions of internet connected devices embedded to physical objects & people collect & share data to information networks merging the digital & physical worlds. 8 Billion devices (2017) and estimated 30 Billion devices (2020) with global market value of $7.1 Trillion. Device costs range from few cents to couple of dollars depending on underlying tech / functions. Counterfeiting, supply chain challenges & hardware tampering cannot be solved with conventional IoT because
 
+a) identities & data are not very secure given low complexity of majority of IoT devices. 
+b) several IoT Devices can be easily cloned
+c) Lack of universal standards, poor interoperability across devices, connectivity protocol, networks, & platforms limit adoption
+d) Expensive infrastructure & high maintenance cost due to centralized clouds, large server farms, & networking equipment. 
 
-With a blockchain hosted Open Registry for the Internet of Things, everything—from your car, to a work of art, to the glass of wine you drink at the end of a long day—can have a unique and unforgeable digital identity.
+# How is Kramaa Useful
 
+IoT can be secured with cryptography, tamper-proof form factors & blockchain back-end
+Secure blockchain with IoT also opens up entirely new industries and business models, such as proximity-based commerce, sharing economy, automation & M2M communication.
 
-How is Kramaa Useful
+Benefits of convergence
 
-What you can build on Kramaa
+Protocol-based trust distributed across a network, managed & secured through encoded and permissioned access, smart contracts, and cryptography. 
+Cost benefits: Instead of collecting, storing, and managing all IoT data in centralized hubs, a distributed architecture can help mitigate single points of attack or failure, offer a ‘single version of the truth’ through shared, immutable records, and reduce costs in infrastructure, reconciliation, and management. 
+Offer’s IoT a level of interoperability, transparency & security currently absent from today’s architectures 
 
-Technical Overview
+Advantages
+
+Register unique strong cryptographic identity and record transaction on the blockchain
+Transfer of custody as immutable transactions on a ledger
+Unique ownership of a trading item across the supply chain
+Compliance with track & trace regulations
+Greater transparency and consumer trust
+Faster settlement of payments
+Increased efficiency in trading of goods
+Reduced reconciliation costs in inventory & vendor management
+
+# Value Proposition
+
+Cost Reductions - 
+
+Pool data across value chain
+Automate Transactions
+
+Revenue Enhancements - 
+
+Minimize Lost Sales
+Monetize utilization of idle assets
+Monetize data through market place
+
+Risk Mitigation -
+
+Ensure compliance & security
+Protect brand reputation
+
+# What you can build on Kramaa
+
+# Technical Overview
+
 Express Framework of Node.js for backend support.
 React.js for Front end.
 PostgreSQL for database.
@@ -40,6 +82,7 @@ All directory structures as per the following standards:
 
 
 To submit your comments or feedback please reach us here: 
+
 Forum: 
 Slack: https://xinfin-public.slack.com/
 
