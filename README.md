@@ -90,7 +90,7 @@ All directory structures as per the following standards:
 # Platform Diagram
 
 
-
+![image](https://github.com/XinFinOrg/Kramaa/blob/master/iot-platform.png)
 
 
 
