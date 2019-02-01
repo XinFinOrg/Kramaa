@@ -37,6 +37,7 @@
     "file-loader": "^3.0.1",
     "flag-icon-css": "^3.2.1",
     "font-awesome": "^4.7.0",
+    "formik": "^1.4.3",
     "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^29.0.0",
     "node-sass": "^4.11.0",
@@ -57,6 +58,7 @@
     "sass-loader": "^7.1.0",
     "simple-line-icons": "^2.4.1",
     "spinkit": "1.2.5",
-    "style-loader": "^0.23.1"
+    "style-loader": "^0.23.1",
+    "yup": "^0.26.10"
   }
 }

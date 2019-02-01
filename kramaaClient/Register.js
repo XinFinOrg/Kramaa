@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link} from "react-router-dom";
 import { Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 class Register extends Component {
     constructor(props){
