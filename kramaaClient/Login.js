@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Alert, Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
 class Login extends Component {
     constructor(props){
@@ -10,7 +10,8 @@ class Login extends Component {
         email: '',
         password: '',
         forgotPassword: '',
-        forgotPasswordEmail: ''
+        forgotPasswordEmail: '',
+        errorMessage: ''
       };
 
       this.handleChange = this.handleChange.bind(this);
@@ -29,9 +30,19 @@ class Login extends Component {
     onSubmitForm(e) {
       e.preventDefault();
       axios.post("/api/users/userLogin", {email: this.state.email, password: this.state.password}).then(res=> {
-        if(res.data.status=="Yay"){
+        let statusMessage = res.data.status;
+        console.log(res.data.status, "Direct");
+        if(statusMessage=="Yay"){
           sessionStorage.setItem("clientToken", res.data.clientToken);
           this.props.history.push('/dashboard');
+        }
+        else{
+          console.log(statusMessage);
+          this.setState({
+            errorMessage: <Alert color="danger">
+                            {statusMessage}
+                          </Alert>
+          });
         }
       });
     }
@@ -52,7 +63,7 @@ class Login extends Component {
       })
     }
     render() {
-        const { email, password, forgotPassword, forgotPasswordEmail } = this.state;
+        const { email, password, forgotPassword, forgotPasswordEmail, errorMessage } = this.state;
         let render;
         if(forgotPassword=='true'){
           render =
@@ -86,6 +97,7 @@ class Login extends Component {
                   <Form>
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>
+                    {errorMessage}
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
