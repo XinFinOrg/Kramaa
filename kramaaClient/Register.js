@@ -227,7 +227,7 @@ class Register extends Component {
                         <Input type="password" placeholder="Repeat password" name="repeatPassword" value= {repeatPassword} onChange={this.handleChange} autoComplete="new-password" />
                       </InputGroup>
                       <Button color="success" onClick= {this.onSubmitUserDetails} block>Create Account</Button>
-                    </Form>
+                    </Form>;
 
                     <CardBody>
                       <a href="https://github.com/jaredpalmer/formik" target="_blank" rel="noreferrer noopener">Formik</a> <cite>Build forms in React, without the tears</cite> with <a href="https://github.com/jquense/yup" target="_blank" rel="noreferrer noopener">Yup</a> <cite>Dead simple Object schema
