@@ -47,7 +47,7 @@ module.exports = {
       var transaction = {
         from: config.testnetFaucetAddress,
         data: '0x'+bytecode,
-        gasLimit: 3000000,
+        gasLimit: 4700000,
         gasPrice: gasPrice
       };
 
@@ -77,18 +77,17 @@ module.exports = {
           web3.utils.stringToHex(tokenSymbol),
           web3.utils.stringToHex(organizationName)
         ).encodeABI(),
-        "gasLimit": 2000000,
         gasPrice: gasPrice
       };
 
-      // web3.eth.estimateGas(transaction).then(gasLimit => {
-        // transaction["gasLimit"] = gasLimit;
+      web3.eth.estimateGas(transaction).then(gasLimit => {
+        transaction["gasLimit"] = gasLimit;
         web3.eth.accounts.signTransaction(transaction, config.testnetFaucetPrivateKey).then(result => {
           web3.eth.sendSignedTransaction(result.rawTransaction).then(receipt => {
             resolve(receipt);
           });
         });
-      // });
+      });
     });
   },
 
