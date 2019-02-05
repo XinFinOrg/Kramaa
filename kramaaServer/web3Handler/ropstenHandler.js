@@ -47,7 +47,7 @@ module.exports = {
       var transaction = {
         from: config.testnetFaucetAddress,
         data: '0x'+bytecode,
-        gasLimit: 2000000,
+        gasLimit: 3000000,
         gasPrice: gasPrice
       };
 
