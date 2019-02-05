@@ -47,7 +47,7 @@ module.exports = {
       var transaction = {
         from: config.testnetFaucetAddress,
         data: '0x'+bytecode,
-        gas: 4700000,
+        gas: 2000000,
         gasPrice: gasPrice
       };
 
@@ -77,7 +77,7 @@ module.exports = {
           web3.utils.stringToHex(tokenSymbol),
           web3.utils.stringToHex(organizationName)
         ).encodeABI(),
-        "gasLimit": 3000000,
+        "gasLimit": 2000000,
         gasPrice: gasPrice
       };
 
