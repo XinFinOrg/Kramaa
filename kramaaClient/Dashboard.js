@@ -63,6 +63,7 @@ class Dashboard extends Component {
   projectFormHandler(name, industry, subIndustry, tokenName, tokenSymbol) {
     axios.post("/api/dashboard/createProject", {name: name, industry: industry, subIndustry: subIndustry, tokenName: tokenName, tokenSymbol: tokenSymbol, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
       if(res.data.status=="Project created successsfully"){
+        this.renderProjectModal();
         this.setState({
           projectList: [...this.state.projectList, res.data.project.name],
           projectCount: parseInt(this.state.projectCount)+1

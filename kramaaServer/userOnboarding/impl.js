@@ -200,15 +200,26 @@ module.exports = {
         email: email
       }
     }).then(client => {
-      mailer.sendForgotPassword(email, client.uniqueId);
+      mailer.forgotPasswordMailer(req, email, client.uniqueId);
       res.send({
         status: true
       });
     });
   },
 
-  changePassword: (req, res) => {
-    let email= req.body.email
+  resetPassword: (req, res) => {
+    Client.findOne({
+      where: {
+        uniqueId: req.body.resetId
+      }
+    }).then(client => {
+      client.password = generateHash(req.body.password);
+      client.save().then(client => {
+        res.send({
+          status: true
+        })
+      })
+    })
   }
 
 }

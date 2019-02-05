@@ -10,4 +10,5 @@ router.post('/invitedUserInfo', impl.invitedUserInfo);
 router.post('/userLogin', impl.userLogin);
 router.post('/verifyOTP', impl.verifyOTP);
 router.post('/forgotpassword', impl.forgotPassword);
+router.post('/resetpassword', impl.resetPassword);
 module.exports = router;

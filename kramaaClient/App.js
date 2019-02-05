@@ -3,6 +3,7 @@ import {hot} from "react-hot-loader";
 // import { connect } from "react-redux";
 import Register from "./Register";
 import Login from "./Login";
+import ForgotPassword from "./ForgotPassword";
 import './App.scss';
 import Invitation from "./Invitation";
 import Layout from "./containers/Layout";
@@ -30,6 +31,7 @@ class App extends Component{
             <Route exact path="/invitation" component={Invitation}/>
             <Route exact path="/" component={Login}/>
             <Route exact path="/register" component={Register}/>
+            <Route exact path="/resetPassword" component={ForgotPassword}/>
           </div>
         </BrowserRouter>
       </div>

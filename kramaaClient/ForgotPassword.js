@@ -1,31 +1,21 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link} from "react-router-dom";
-import { Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Alert, Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
 class ForgotPassword extends Component {
     constructor(props){
       super(props);
       this.state = {
-        email: '',
-        otp: '',
-        submittedOTP: '',
-        otpVerified: '',
-        firstName: '',
-        lastName: '',
         password: '',
         repeatPassword: '',
-        userRegistered: '',
-        organizationName: '',
-        addressLine1: '',
-        addressLine2: '',
-        addressLine3: ''
+        submitted: '',
+        resetId: '',
+        errorMessage: ''
       };
 
       this.handleChange = this.handleChange.bind(this);
       this.onSubmitForm = this.onSubmitForm.bind(this);
-      this.onSubmitOTP = this.onSubmitOTP.bind(this);
-      this.onSubmitUserDetails = this.onSubmitUserDetails.bind(this);
     }
 
     handleChange(e) {
@@ -33,153 +23,61 @@ class ForgotPassword extends Component {
       console.log("name", name, "value", value);
       this.setState({ [name]: value });
     }
-    onSubmitForm(e) {
-      e.preventDefault();
-      console.log("Submitted");
-      axios.post('/api/users/userOnboarding', {email: this.state.email})
-      .then(res => {
-        this.setState({otp: res.data.otp})
-        console.log("OTP is", this.state.otp);
+
+    componentDidMount() {
+      this.setState({
+        resetId: this.props.location.search.split('=')[1]
       })
     }
 
-    onSubmitOTP(e) {
-      e.preventDefault();
-      axios.post('/api/users/verifyOTP', {'email': this.state.email, 'otp': this.state.submittedOTP})
-      .then(res => {
-        if(res.data.status == "true"){
-          this.setState({otpVerified: "true"})
-        }
-      })
-    }
-    onSubmitUserDetails(e) {
+    onSubmitForm(e) {
       e.preventDefault();
       if(this.state.password == this.state.repeatPassword){
-        axios.post('/api/users/userRegistration', {'email': this.state.email, 'firstName': this.state.firstName, 'lastName': this.state.lastName, 'password': this.state.password, 'organizationName': this.state.organizationName, 'addressLine1': this.state.addressLine1, 'addressLine2': this.state.addressLine2, 'addressLine3': this.state.addressLine3})
+        axios.post('/api/users/resetPassword', {resetId: this.state.resetId, password: this.state.password})
         .then(res => {
-          if(res.data.status== "New User"){
-            this.setState({userRegistered: "true"})
-          }
-        });
+          this.setState({
+            submitted: 'true'
+          })
+        })
       }
-      else {
-        console.log("Passwords don't match");
+      else{
+        this.setState({
+          errorMessage: <Alert color="danger">
+                          Both Passwords need to match !!
+                        </Alert>
+        })
       }
     }
+
     render() {
-        const { email, submittedOTP, otpVerified, firstName, lastName, organizationName, addressLine1, addressLine2, addressLine3, password, repeatPassword, userRegistered } = this.state;
+        const { password, repeatPassword, submitted, errorMessage } = this.state;
         let render;
-        if(this.state.otp==""){
+        if(submitted==''){
           render = <div>
-            <h2>Forgot Password Form</h2>
-            <Form>
-            <InputGroup className="mb-3">
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <i className="icon-user"></i>
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input type="text" name="email" value= {email} onChange={this.handleChange} placeholder="Enter email" autoComplete="username" />
-            </InputGroup>
-            <Button color="success" onClick= {this.onSubmitForm} block>Register</Button>
-          </Form>
-        </div>;
-      } else if(otpVerified==""){
-          render = <div>
-            <h2>OTP</h2>
-            <Form>
-            <InputGroup className="mb-3">
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <i className="icon-user"></i>
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input type="text" name="submittedOTP" value= {submittedOTP} onChange={this.handleChange} placeholder="Enter  OTP" autoComplete="username" />
-            </InputGroup>
-            <Button color="success" onClick= {this.onSubmitOTP} block>Submit OTP</Button>
-          </Form>
-        </div>;
-        }
-        else if(userRegistered==""){
-        render =    <Form>
-                      <h1>Register</h1>
-                      <p className="text-muted">Create your account</p>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-user"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" name="firstName" value= {firstName} onChange={this.handleChange} placeholder="First Name" autoComplete="username" />
-                      </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-user"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" name="lastName" value= {lastName} onChange={this.handleChange} placeholder="Last Name" autoComplete="username" />
-                      </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-people"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" name="organizationName" value= {organizationName} onChange={this.handleChange} placeholder="Organization Name" autoComplete="Organization Name" />
-                      </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-notebook"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" name="addressLine1" value= {addressLine1} onChange={this.handleChange} placeholder="AddressLine1" autoComplete="AddressLine1" />
-                      </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-notebook"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" name="addressLine2" value= {addressLine2} onChange={this.handleChange} placeholder="AddressLine2" autoComplete="AddressLine2" />
-                      </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-notebook"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" name="addressLine3" value= {addressLine3} onChange={this.handleChange} placeholder="AddressLine3" autoComplete="AddressLine3" />
-                      </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>@</InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" readOnly name="email" value= {email} placeholder="Email" autoComplete="email" />
-                      </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-lock"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="password" name="password" value= {password} onChange={this.handleChange} placeholder="Password" autoComplete="new-password" />
-                      </InputGroup>
-                      <InputGroup className="mb-4">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-lock"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="password" placeholder="Repeat password" name="repeatPassword" value= {repeatPassword} onChange={this.handleChange} autoComplete="new-password" />
-                      </InputGroup>
-                      <Button color="success" onClick= {this.onSubmitUserDetails} block>Create Account</Button>
-                    </Form>;
+          <h3>Please enter your new password here:</h3>
+          {errorMessage}
+          <InputGroup className="mb-3">
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <i className="icon-lock"></i>
+              </InputGroupText>
+            </InputGroupAddon>
+            <Input type="password" name="password" value= {password} onChange={this.handleChange} placeholder="Password" autoComplete="new-password" />
+          </InputGroup>
+          <InputGroup className="mb-4">
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <i className="icon-lock"></i>
+              </InputGroupText>
+            </InputGroupAddon>
+            <Input type="password" placeholder="Repeat password" name="repeatPassword" value= {repeatPassword} onChange={this.handleChange} autoComplete="new-password" />
+          </InputGroup>
+          <Button color="success" onClick= {this.onSubmitForm} block>Change Password</Button>
+            </div>;
         }
         else {
           render = <div>
-            <h3>User Has been Registered Successfully</h3>
+            <h3>Your Password has been changed Successfully</h3>
               <Link to="/">
                 <Button color="primary" className="mt-3" active tabIndex={-1}>Proceed to Login</Button>
               </Link>

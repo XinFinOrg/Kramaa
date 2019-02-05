@@ -51,11 +51,10 @@ class Login extends Component {
 
     onSubmitResetForm(e) {
       e.preventDefault();
-      axios.post("/api/users/userLogin", {email: this.state.email, password: this.state.password}).then(res=> {
-        if(res.data.status=="Yay"){
-          sessionStorage.setItem("clientToken", res.data.clientToken);
-          this.props.history.push('/dashboard');
-        }
+      axios.post("/api/users/forgotPassword", {email: this.state.email}).then(res=> {
+        this.setState({
+          forgotPassword: 'sent'
+        });
       });
     }
 
@@ -87,6 +86,16 @@ class Login extends Component {
                   </Col>
                 </Row>
                 </Form>
+              </CardBody>
+            </Card>
+          </CardGroup>;
+        }
+        else if(forgotPassword=='sent'){
+          render =
+          <CardGroup>
+            <Card className="p-4">
+              <CardBody>
+                  A reset password link has been sent to your email id. 
               </CardBody>
             </Card>
           </CardGroup>;

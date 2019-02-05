@@ -13,7 +13,8 @@ class ProjectFormModal extends Component {
       tokenSymbol: '',
       industry: '',
       subIndustry: '',
-      subIndustryList: ''
+      subIndustryList: '',
+      isLoading: false
     };
 
     this.toggle = this.toggle.bind(this);
@@ -24,8 +25,6 @@ class ProjectFormModal extends Component {
 
   componentDidMount() {
     if(this.props.isClosed=="true"){
-      console.log("Props",this.props.isOpen);
-      console.log("cLOSED MODAL");
       this.setState({
         modal: false
       })
@@ -54,11 +53,21 @@ class ProjectFormModal extends Component {
 
   onSubmitForm(e) {
     e.preventDefault();
+    this.setState({
+      isLoading: true
+    })
     this.props.parentHandler(this.state.name, this.state.industry, this.state.subIndustry, this.state.name, this.state.name)
   }
 
   render() {
-    const {name, description, industry, subIndustry, tokenName, tokenSymbol} = this.state;
+    const {name, description, industry, subIndustry, tokenName, tokenSymbol, isLoading} = this.state;
+    let button;
+    if(!isLoading){
+      button = <Button color="primary" onClick = {this.onSubmitForm} >Create Project</Button>;
+    }
+    else {
+      button = 'Please wait ...';
+    }
     return (
       <div className="animated fadeIn">
         <Row>
@@ -117,7 +126,7 @@ class ProjectFormModal extends Component {
               </Form>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick = {this.onSubmitForm} >Create Project</Button>
+                {button}
               </ModalFooter>
             </Modal>
           </Col>
