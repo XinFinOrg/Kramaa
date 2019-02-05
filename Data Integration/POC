@@ -1,0 +1,27 @@
+
+
+Components Required:
+
+Arduino Uno
+GSM Module (SIM900A) 
+GPS Module (SIM28ML) 
+Accelerometer (ADXL335) 
+16x2 LCD 
+Power Supply
+Jumpers
+Breadboard
+12v power supply
+
+Working:
+
+Arduino is used for controlling whole the process with a GPS Receiver and GSM module. 
+GSM module will require a 4G SIM card. GPS Receiver is used for detecting coordinates of the vehicle. 
+GSM module is used for sending the real time location of user. 
+The data will be sent to IOT platform and from that platform the location coordinates will be retrieved on Mobile App. 
+The coordinates will be fetched to Google Map on mobile. The mobile App will have Login to have secured platform. 
+Accelerometer is used for detecting accident or sudden change in any axis. 
+If a sudden change in accelerometer data is detected, then an alert SMS will be sent to provided Mobile Number. 
+In this manner several vehicles will be able to monitor from a single mobile App. 
+We will use Kramaa IOT Platform which will act as a broker. 
+As per the industry requirement of now, MQTT is the appropriate protocol for data transfer. 
+Hence we will use MQTT protocol and to make it more secure we may use SSL
