@@ -43,15 +43,12 @@ module.exports = {
       // .then(function(newContractInstance){
       //   // console.log(newContractInstance.options.address) // instance with the new contract address
       // });
-      let gasPrice = await web3.eth.getGasPrice() * 1.4;
-      let nonce = await web3.eth.getTransactionCount(config.testnetFaucetAddress);
-      nonce+=1;
+      let gasPrice = await web3.eth.getGasPrice() * 1.5;
       var transaction = {
         from: config.testnetFaucetAddress,
         data: '0x'+bytecode,
         gas: 4700000,
-        gasPrice: gasPrice,
-        nonce: nonce
+        gasPrice: gasPrice
       };
 
       web3.eth.estimateGas(transaction).then(gasLimit => {
@@ -69,9 +66,7 @@ module.exports = {
   addNewProject: (contractAddress, name, description, tokenName, tokenSymbol, organizationName) => {
     return new Promise(async (resolve, reject) => {
       let registryContractInstance = new web3.eth.Contract(registryABI, config.registryContractAddress);
-      let nonce = web3.eth.getTransactionCount(config.testnetFaucetAddress);
-      nonce+=1;
-      let gasPrice = await web3.eth.getGasPrice() * 1.4;
+      let gasPrice = await web3.eth.getGasPrice() * 1.5;
       var transaction = {
         "to": config.registryContractAddress,
         "data": registryContractInstance.methods.addNewProject(
@@ -83,8 +78,7 @@ module.exports = {
           web3.utils.stringToHex(organizationName)
         ).encodeABI(),
         "gasLimit": 3000000,
-        gasPrice: gasPrice,
-        nonce: nonce
+        gasPrice: gasPrice
       };
 
       // web3.eth.estimateGas(transaction).then(gasLimit => {
