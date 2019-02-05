@@ -234,7 +234,7 @@ class Register extends Component {
                       validation</cite>
                       <hr />
                       <Formik
-                        initialValues={ email: email }
+                        initialValues={{ email: email }}
                         validate={validate(validationSchema)}
                         onSubmit={onSubmit}
                         render={
