@@ -28,8 +28,11 @@ module.exports = {
   },
 
   createProject: (req, res) => {
+    console.log("Creating Project");
     contractHandler.createERC721Contract(req.body.tokenName, req.body.tokenSymbol).then(contractCode => {
+      console.log("Contract created");
       contractHandler.compileContract(contractCode).then(compiledContract => {
+        console.log("Contract compiled");
         web3Handler.deployContract(compiledContract.abi, compiledContract.byteCode).then(deploymentInformation => {
           console.log("Deployment info is ", deploymentInformation);
           web3Handler.addNewProject(
