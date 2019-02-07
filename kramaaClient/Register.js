@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link} from "react-router-dom";
-import { Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Alert, Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -24,12 +24,9 @@ const validationSchema = function (values) {
     .min(6, `Password has to be at least ${6} characters!`)
     .matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/, 'Password must contain: numbers, uppercase and lowercase letters\n')
     .required('Password is required'),
-    confirmPassword: Yup.string()
+    repeatPassword: Yup.string()
     .oneOf([values.password], 'Passwords must match')
     .required('Password confirmation is required'),
-    accept: Yup.bool()
-    .required('* required')
-    .test('accept', 'You have to accept our Terms and Conditions!', value => value === true),
   })
 }
 
@@ -55,6 +52,7 @@ const getErrorsFromValidationError = (validationError) => {
   }, {})
 }
 
+
 class Register extends Component {
     constructor(props){
       super(props);
@@ -71,7 +69,8 @@ class Register extends Component {
         organizationName: '',
         addressLine1: '',
         addressLine2: '',
-        addressLine3: ''
+        addressLine3: '',
+        errorMessage: ''
       };
 
       this.handleChange = this.handleChange.bind(this);
@@ -113,11 +112,44 @@ class Register extends Component {
         });
       }
       else {
-        console.log("Passwords don't match");
+        this.setState({
+          errorMessage: <Alert> Passwords don't match </Alert>
+        })
       }
     }
+
+    findFirstError (formName, hasError) {
+      const form = document.forms[formName]
+      for (let i = 0; i < form.length; i++) {
+        if (hasError(form[i].name)) {
+          form[i].focus()
+          break
+        }
+      }
+    }
+
+    validateForm (errors) {
+      this.findFirstError('simpleForm', (fieldName) => {
+        return Boolean(errors[fieldName])
+      })
+    }
+
+    touchAll(setTouched, errors) {
+      setTouched({
+          firstName: true,
+          lastName: true,
+          userName: true,
+          email: true,
+          password: true,
+          confirmPassword: true,
+          accept: true
+        }
+      )
+      this.validateForm(errors)
+    }
+
     render() {
-        const { email, submittedOTP, otpVerified, firstName, lastName, organizationName, addressLine1, addressLine2, addressLine3, password, repeatPassword, userRegistered } = this.state;
+        const { errorMessage, email, submittedOTP, otpVerified, firstName, lastName, organizationName, addressLine1, addressLine2, addressLine3, password, repeatPassword, userRegistered } = this.state;
         let render;
         if(this.state.userStatus==""){
           render = <div>
@@ -167,16 +199,18 @@ class Register extends Component {
         </div>;
         }
         else if(userRegistered==""){
-        render =    <Form>
+        render =
+                    <Form>
                       <h1>Register</h1>
                       <p className="text-muted">Create your account</p>
+                      {errorMessage}
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="firstName" value= {firstName} onChange={this.handleChange} placeholder="First Name" autoComplete="username" />
+                        <Input type="text" name="firstName" required value= {firstName} onChange={this.handleChange} placeholder="First Name" autoComplete="username" />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -184,7 +218,7 @@ class Register extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="lastName" value= {lastName} onChange={this.handleChange} placeholder="Last Name" autoComplete="username" />
+                        <Input type="text" name="lastName" required value= {lastName} onChange={this.handleChange} placeholder="Last Name" autoComplete="username" />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -192,7 +226,7 @@ class Register extends Component {
                             <i className="icon-people"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="organizationName" value= {organizationName} onChange={this.handleChange} placeholder="Organization Name" autoComplete="Organization Name" />
+                        <Input type="text" name="organizationName" required value= {organizationName} onChange={this.handleChange} placeholder="Organization Name" autoComplete="Organization Name" />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -200,7 +234,7 @@ class Register extends Component {
                             <i className="icon-notebook"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="addressLine1" value= {addressLine1} onChange={this.handleChange} placeholder="AddressLine1" autoComplete="AddressLine1" />
+                        <Input type="text" name="addressLine1" required value= {addressLine1} onChange={this.handleChange} placeholder="AddressLine1" autoComplete="AddressLine1" />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -230,7 +264,7 @@ class Register extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" name="password" value= {password} onChange={this.handleChange} placeholder="Password" autoComplete="new-password" />
+                        <Input type="password" name="password" required value= {password} onChange={this.handleChange} placeholder="Password" autoComplete="new-password" />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -238,7 +272,7 @@ class Register extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Repeat password" name="repeatPassword" value= {repeatPassword} onChange={this.handleChange} autoComplete="new-password" />
+                        <Input type="password" required placeholder="Repeat password" name="repeatPassword" value= {repeatPassword} onChange={this.handleChange} autoComplete="new-password" />
                       </InputGroup>
                       <Button color="success" onClick= {this.onSubmitUserDetails} block>Create Account</Button>
                     </Form>;

@@ -1,6 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
+import axios from "axios";
 
 import {
   AppBreadcrumb,
@@ -23,7 +24,16 @@ const Header = React.lazy(() => import('./Header'));
 
 class Layout extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
-  
+
+  componentWillMount(){
+    axios.post("/api/users/isLoggedIn", {clientToken: sessionStorage.getItem("clientToken")})
+    .then(res=> {
+      if(res.data.status==false){
+        this.props.history.push('/');
+      }
+    });
+  }
+
   signOut(e) {
     e.preventDefault()
     sessionStorage.clear();

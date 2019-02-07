@@ -22,15 +22,12 @@ class Header extends Component {
       <React.Fragment>
 
       <AppNavbarBrand
-        full={{ src: logo, width: 60, height: 60, alt: 'Kramaa Logo' }}
+        full={{ src: logo, width: 48, height: 58, alt: 'Kramaa Logo' }}
       />
       <AppSidebarToggler className="d-md-down-none" display="lg" />
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
             <Link to="/profile">Profile</Link>
-          </NavItem>
-          <NavItem className="px-3">
-            <Link to = "/settings">Settings</Link>
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>

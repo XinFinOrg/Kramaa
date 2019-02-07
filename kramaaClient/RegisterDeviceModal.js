@@ -14,7 +14,8 @@ class RegisterDeviceModal extends Component {
       protocol: 'MQTT',
       registryID: '',
       sensor: '',
-      selectedProject: ''
+      selectedProject: '',
+      isLoading: false
     };
 
     this.toggle = this.toggle.bind(this);
@@ -51,12 +52,24 @@ class RegisterDeviceModal extends Component {
   }
 
   render() {
-    const {tokenIDTo, selectedProject, number,protocol, deviceType, registryID, sensor, deviceURN} = this.state;
+    const {tokenIDTo, selectedProject, number,protocol, deviceType, registryID, sensor, deviceURN, isLoading} = this.state;
     let dropdownRender = [<option key= "" name= "" value="">Select Project</option>];
     let j;
     for(var i=0;i<this.props.projectList.length; i++){
       j= this.props.projectList[i];
       dropdownRender.push(<option key= {j} name= {j} value={j}>{j}</option>);
+    }
+    let button;
+    if(!isLoading){
+      button = <Button color="primary" onClick = {this.onSubmitForm} >Create Project</Button>;
+    }
+    else {
+      button = <div className="sk-folding-cube">
+        <div className="sk-cube1 sk-cube"></div>
+        <div className="sk-cube2 sk-cube"></div>
+        <div className="sk-cube4 sk-cube"></div>
+        <div className="sk-cube3 sk-cube"></div>
+      </div>;
     }
 
     return (

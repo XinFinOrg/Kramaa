@@ -222,10 +222,20 @@ module.exports = {
         email: email
       }
     }).then(client => {
-      mailer.forgotPasswordMailer(req, email, client.uniqueId);
-      res.send({
-        status: true
-      });
+      if(client){
+        mailer.forgotPasswordMailer(req, email, client.uniqueId);
+        res.send({
+          status: true,
+          message: "A reset password link has been sent to your email id."
+        });
+      }
+      else{
+        res.send({
+          status: false,
+          message: "User does not exist on the system"
+        })
+      }
+
     });
   },
 

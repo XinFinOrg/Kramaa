@@ -40,10 +40,15 @@ class Dashboard extends Component {
   componentWillMount() {
     axios.post("/api/dashboard/projectList", {clientToken: sessionStorage.getItem("clientToken")})
     .then(res=> {
-      for(let i=0; i<res.data.projects.length; i++){
-        this.setState({
-          projectList: [...this.state.projectList, res.data.projects[i].name],
-        })
+      if(res.data.status==false){
+        this.props.history.push('/');
+      }
+      else{
+        for(let i=0; i<res.data.projects.length; i++){
+          this.setState({
+            projectList: [...this.state.projectList, res.data.projects[i].name],
+          })
+        }
       }
     });
   }
