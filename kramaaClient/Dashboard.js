@@ -78,9 +78,12 @@ class Dashboard extends Component {
   }
 
   mintTokenFormHandler(from, to, tokenURI, deviceURN, projectName) {
+    this.renderDeviceModal();
     axios.post('/api/projects/mintNewToken', {tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, projectName: projectName, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
     .then(res => {
-      deviceCount: parseInt(this.state.deviceCount)+1
+      this.setState({
+        deviceCount: parseInt(this.state.deviceCount)+ parseInt(to) - parseInt(from) +1
+      })
     })
   }
 

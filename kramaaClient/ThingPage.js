@@ -25,13 +25,23 @@ class ThingPage extends Component {
         description: res.data.thing.description,
         id: res.data.thing.uniqueId,
         brand: res.data.thing.brand,
-        associationStatus: res.data.thing.associationStatus,
-        uri: [...this.state.uri, res.data.thing.uri],
+        associationStatus: res.data.thing.associationStatus
       })
+      for(let i=0; i<res.data.thing.uri.length; i++){
+        this.setState({
+          uri: [...this.state.uri, res.data.thing.uri[i]]
+        })
+      }
     })
   }
   render(){
     const {name, description, id, brand, associationStatus, uri} = this.state;
+    console.log(uri);
+    console.log(uri.length);
+    let imageRender = [];
+    for(let i=0; i<uri.length; i++){
+      imageRender.push(<ListGroupItem>Image: <img src={"https://gateway.ipfs.io/ipfs/"+uri[i]} /></ListGroupItem>);
+    }
     return(
       <div>
         <Link to="/things"><Button color="primary">Back to Thing List</Button></Link><br /><br/>
@@ -45,7 +55,7 @@ class ThingPage extends Component {
                 <ListGroupItem>Thing ID: {id}</ListGroupItem>
                 <ListGroupItem>Description: {description}</ListGroupItem>
                 <ListGroupItem>Brand: {brand}</ListGroupItem>
-                <ListGroupItem>URI: {uri}</ListGroupItem>
+                {imageRender}
                 <ListGroupItem>Association to any device?: {String(associationStatus)}</ListGroupItem>
               </ListGroup>
             </CardBody>
