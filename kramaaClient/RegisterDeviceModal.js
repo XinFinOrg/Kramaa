@@ -48,7 +48,7 @@ class RegisterDeviceModal extends Component {
   }
 
   fetchTokenSupply(projectName) {
-    axios.post('/projects/getTokenSupply', { projectName: this.state.selectedProject})
+    axios.post('/api/projects/getTokenSupply', { projectName: projectName})
     .then(res=> {
       this.setState({
         totalSupply: res.data.totalSupply
