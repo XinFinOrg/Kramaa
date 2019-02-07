@@ -20,7 +20,7 @@ module.exports = {
         email: req.body.email
       }
     }).then(client => {
-      if(client){
+      if(client && client.emailVerified){
         console.log("User already exists");
         res.send({"status": "User already exists"});
       }
