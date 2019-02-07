@@ -8,7 +8,7 @@ var configAuth = require('../config');
 
 router.post('/getProjectInfo', isLoggedIn, impl.getProjectInfo);
 router.post('/mintNewToken', isLoggedIn, impl.mintNewToken);
-router.post('/getTokenSupply', isLoggedIn, impl.getTokenSupply);
+router.post('/getTokenSupply', impl.getTokenSupply);
 
 module.exports = router;
 
