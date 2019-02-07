@@ -30,7 +30,7 @@ module.exports = {
         req.body.projectName
       );
     })
-  }
+  },
 
   getTokenSupply: (req, res) => {
     Project.findOne({
