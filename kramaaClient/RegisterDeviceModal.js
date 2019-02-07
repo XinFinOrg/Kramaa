@@ -40,9 +40,10 @@ class RegisterDeviceModal extends Component {
     this.setState({ [name]: value });
     if(name== "selectedProject"){
       this.fetchTokenSupply(value);
+      this.forceUpdate();
     }
     else if(name=="number"){
-      this.setState({tokenIDTo: this.props.totalSupply+parseInt(value)-1});
+      this.setState({tokenIDTo: this.state.totalSupply+parseInt(value)-1});
     }
     this.forceUpdate();
   }
@@ -64,7 +65,7 @@ class RegisterDeviceModal extends Component {
   onSubmitForm(e) {
     e.preventDefault();
     this.props.parentHandler(
-      this.props.totalSupply,
+      this.state.totalSupply,
       this.state.tokenIDTo,
       {protocol: this.state.protocol, registryID: this.state.registryID, sensor: this.state.sensor},
       this.state.deviceURN,

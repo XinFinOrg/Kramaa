@@ -27,7 +27,7 @@ class ProjectPage extends Component {
   }
 
   mintTokenFormHandler(from, to, tokenURI, deviceURN, projectName) {
-    axios.post('/api/projects/mintNewToken', {projectAddress: this.state.projectAddress, tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, projectName: projectName, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
+    axios.post('/api/projects/mintNewToken', {projectAddress: projectName, tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, projectName: projectName, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
     .then(res => {
       console.log(res);
     })
