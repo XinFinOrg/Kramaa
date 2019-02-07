@@ -76,7 +76,7 @@ class ProjectPage extends Component {
             </blockquote>
           </CardBody>
         </Card>
-        <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.mintTokenFormHandler} totalSupply= {parseInt(this.state.totalSupply)+1} projectList = {[projectName]} />
+        <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.mintTokenFormHandler}  projectList = {[projectName]} />
         </Col>
       </Suspense>
       </div>

@@ -52,7 +52,7 @@ class RegisterDeviceModal extends Component {
     axios.post('/api/projects/getTokenSupply', { projectName: projectName})
     .then(res=> {
       this.setState({
-        totalSupply: res.data.totalSupply
+        totalSupply: parseInt(res.data.totalSupply)+1
       })
     });
   }
