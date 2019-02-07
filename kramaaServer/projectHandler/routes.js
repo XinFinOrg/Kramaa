@@ -8,6 +8,8 @@ var configAuth = require('../config');
 
 router.post('/getProjectInfo', isLoggedIn, impl.getProjectInfo);
 router.post('/mintNewToken', isLoggedIn, impl.mintNewToken);
+router.post('/getTokenSupply', impl.getTokenSupply);
+
 module.exports = router;
 
 // route middleware to make sure a user is logged in
