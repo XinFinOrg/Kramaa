@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, FormText,Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
+import axios from "axios";
 
 class RegisterDeviceModal extends Component {
 
