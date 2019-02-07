@@ -24,6 +24,13 @@ module.exports = {
         console.log("User already exists");
         res.send({"status": "User already exists"});
       }
+      else if(client && !client.emailVerified){
+        module.exports.resendOTPNewClient(email)
+        .then(createdClient => {
+          mailer.sendConfirmationOTP(createdClient.email, createdClient.verificationOTP);
+          res.send({"status": "Onboarded User", "otp": "true"});
+        });
+      }
       else {
         module.exports.onboardNewClient(email)
         .then(createdClient => {
@@ -137,6 +144,21 @@ module.exports = {
       Client.create(newClient).then(client => {
         resolve(client);
       });
+    });
+  },
+
+  resendOTPNewClient: (email) => {
+    return new Promise(async function (resolve, reject) {
+      Client.findOne({
+        where: {
+          email: email
+        }
+      }).then(client => {
+        client.verificationOTP = Math.floor(Math.random() * 9999);
+        client.save().then(client => {
+          resolve(client);
+        })
+      })
     });
   },
 

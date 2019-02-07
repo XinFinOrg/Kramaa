@@ -60,7 +60,7 @@ class Register extends Component {
       super(props);
       this.state = {
         email: '',
-        otp: '',
+        userStatus: '',
         submittedOTP: '',
         otpVerified: '',
         firstName: '',
@@ -87,11 +87,9 @@ class Register extends Component {
     }
     onSubmitForm(e) {
       e.preventDefault();
-      console.log("Submitted");
       axios.post('/api/users/userOnboarding', {email: this.state.email})
       .then(res => {
-        this.setState({otp: res.data.otp})
-        console.log("OTP is", this.state.otp);
+        this.setState({userStatus: res.data.status})
       })
     }
 
@@ -121,7 +119,7 @@ class Register extends Component {
     render() {
         const { email, submittedOTP, otpVerified, firstName, lastName, organizationName, addressLine1, addressLine2, addressLine3, password, repeatPassword, userRegistered } = this.state;
         let render;
-        if(this.state.otp==""){
+        if(this.state.userStatus==""){
           render = <div>
             <h2>Register</h2>
             <Form>
@@ -136,7 +134,16 @@ class Register extends Component {
             <Button color="success" onClick= {this.onSubmitForm} block>Register</Button>
           </Form>
         </div>;
-      } else if(otpVerified==""){
+      }
+      else if(this.state.userStatus=="User already exists"){
+        render = <div>
+          <h3>User Has already been Registered to the Kramaa platform</h3>
+            <Link to="/">
+              <Button color="primary" className="mt-3" active tabIndex={-1}>Proceed to Login</Button>
+            </Link>
+          </div>;
+      }
+      else if(otpVerified==""){
           render = <div>
             <h2>OTP</h2>
             <Form>
@@ -148,7 +155,14 @@ class Register extends Component {
               </InputGroupAddon>
               <Input type="text" name="submittedOTP" value= {submittedOTP} onChange={this.handleChange} placeholder="Enter  OTP" autoComplete="username" />
             </InputGroup>
-            <Button color="success" onClick= {this.onSubmitOTP} block>Submit OTP</Button>
+            <Row>
+              <Col xs="6">
+                <Button color="primary" className="px-4" onClick= {this.onSubmitOTP}>Submit OTP</Button>
+              </Col>
+              <Col xs="6" className="text-right">
+                <Button color="link" className="px-0" onClick= {this.onSubmitForm}>Resend OTP</Button>
+              </Col>
+            </Row>
           </Form>
         </div>;
         }
