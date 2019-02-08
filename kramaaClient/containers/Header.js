@@ -20,9 +20,10 @@ class Header extends Component {
 
     return (
       <React.Fragment>
-
+      <AppSidebarToggler className="d-lg-none" display="md" mobile />
       <AppNavbarBrand
         full={{ src: logo, width: 48, height: 58, alt: 'Kramaa Logo' }}
+        minimized={{ src: logo, width: 48, height: 58, alt: 'Kramaa Logo' }} 
       />
       <AppSidebarToggler className="d-md-down-none" display="lg" />
         <Nav className="d-md-down-none" navbar>
