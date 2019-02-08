@@ -40,7 +40,7 @@ class ThingPage extends Component {
     console.log(uri.length);
     let imageRender = [];
     for(let i=0; i<uri.length; i++){
-      imageRender.push(<ListGroupItem>Image: <img src={"https://gateway.ipfs.io/ipfs/"+uri[i]} /></ListGroupItem>);
+      imageRender.push(<ListGroupItem>Image {i+1}: <img src={"https://gateway.ipfs.io/ipfs/"+uri[i]} /></ListGroupItem>);
     }
     return(
       <div>
