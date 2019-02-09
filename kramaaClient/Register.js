@@ -72,7 +72,7 @@ class Register extends Component {
         addressLine2: '',
         addressLine3: '',
         errorMessage: '',
-        registerButton: ''
+        registerButton: true
       };
 
       this.handleChange = this.handleChange.bind(this);
@@ -86,7 +86,7 @@ class Register extends Component {
       // Here you will get the final recaptchaToken!!!
       console.log(recaptchaToken, "<= your recaptcha token")
       this.setState({
-        registerButton: <Button color="success" onClick= {this.onSubmitUserDetails} block>Create Account</Button>
+        registerButton: false
       })
     }
 
@@ -289,7 +289,8 @@ class Register extends Component {
                         sitekey={SITEKEY}
                         onChange={this.onChange}
                       />
-                      {registerButton}
+                      <Button color="success" disabled={registerButton} onClick= {this.onSubmitUserDetails} block>Create Account</Button>
+
                     </Form>;
         }
         else {
