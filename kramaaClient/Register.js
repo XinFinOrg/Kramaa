@@ -4,7 +4,8 @@ import { Link} from "react-router-dom";
 import { Alert, Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
+import ReCAPTCHA from "react-google-recaptcha";
+const SITEKEY = "6LcSQ5AUAAAAADkqQKiKrkM4_4xScRtChBrSjOwT";
 
 const validationSchema = function (values) {
   return Yup.object().shape({
@@ -70,13 +71,23 @@ class Register extends Component {
         addressLine1: '',
         addressLine2: '',
         addressLine3: '',
-        errorMessage: ''
+        errorMessage: '',
+        registerButton: ''
       };
 
       this.handleChange = this.handleChange.bind(this);
       this.onSubmitForm = this.onSubmitForm.bind(this);
+      this.onChange = this.onChange.bind(this);
       this.onSubmitOTP = this.onSubmitOTP.bind(this);
       this.onSubmitUserDetails = this.onSubmitUserDetails.bind(this);
+    }
+
+    onChange(recaptchaToken) {
+      // Here you will get the final recaptchaToken!!!
+      console.log(recaptchaToken, "<= your recaptcha token")
+      this.setState({
+        registerButton: <Button color="success" onClick= {this.onSubmitUserDetails} block>Create Account</Button>
+      })
     }
 
     handleChange(e) {
@@ -149,7 +160,7 @@ class Register extends Component {
     }
 
     render() {
-        const { errorMessage, email, submittedOTP, otpVerified, firstName, lastName, organizationName, addressLine1, addressLine2, addressLine3, password, repeatPassword, userRegistered } = this.state;
+        const { errorMessage, email, submittedOTP, otpVerified, firstName, lastName, organizationName, addressLine1, addressLine2, addressLine3, password, repeatPassword, userRegistered, registerButton } = this.state;
         let render;
         if(this.state.userStatus==""){
           render = <div>
@@ -274,7 +285,11 @@ class Register extends Component {
                         </InputGroupAddon>
                         <Input type="password" required placeholder="Repeat password" name="repeatPassword" value= {repeatPassword} onChange={this.handleChange} autoComplete="new-password" />
                       </InputGroup>
-                      <Button color="success" onClick= {this.onSubmitUserDetails} block>Create Account</Button>
+                      <ReCAPTCHA
+                        sitekey={SITEKEY}
+                        onChange={this.onChange}
+                      />
+                      {registerButton}
                     </Form>;
         }
         else {
