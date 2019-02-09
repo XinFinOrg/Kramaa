@@ -27,7 +27,7 @@ class ProjectFormModal extends Component {
   }
 
   reset() {
-    this.setState(initialState);
+    this.setState(this.initialState);
   }
 
   componentDidMount() {
