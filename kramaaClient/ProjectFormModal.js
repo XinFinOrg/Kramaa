@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, FormText,Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
-
+import axios from "axios";
 class ProjectFormModal extends Component {
 
   constructor(props) {
-    super(props);
-    this.state = {
+
+    const initialState = {
       modal: true,
       name: '',
       description: '',
@@ -13,19 +13,25 @@ class ProjectFormModal extends Component {
       tokenSymbol: '',
       industry: '',
       subIndustry: '',
-      subIndustryList: ''
+      subIndustryList: '',
+      isLoading: false
     };
 
+    super(props);
+    this.state = initialState;
+    this.reset = this.reset.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleIndustryChange = this.handleIndustryChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
+  reset() {
+    this.setState(this.initialState);
+  }
+
   componentDidMount() {
     if(this.props.isClosed=="true"){
-      console.log("Props",this.props.isOpen);
-      console.log("cLOSED MODAL");
       this.setState({
         modal: false
       })
@@ -54,11 +60,33 @@ class ProjectFormModal extends Component {
 
   onSubmitForm(e) {
     e.preventDefault();
-    this.props.parentHandler(this.state.name, this.state.industry, this.state.subIndustry, this.state.name, this.state.name)
+    this.setState({
+      isLoading: true
+    })
+    const {name, description, industry, subIndustry, tokenName, tokenSymbol, isLoading} = this.state;
+    axios.post("/api/dashboard/createProject", {name: name, industry: industry, subIndustry: subIndustry, tokenName: name, tokenSymbol: name, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
+      if(res.data.status=="Project created successsfully"){
+        this.reset();
+        this.toggle();
+        this.props.parentHandler(res.data.project.name)
+      }
+    });
   }
 
   render() {
-    const {name, description, industry, subIndustry, tokenName, tokenSymbol} = this.state;
+    const {name, description, industry, subIndustry, tokenName, tokenSymbol, isLoading} = this.state;
+    let button;
+    if(!isLoading){
+      button = <Button color="primary" onClick = {this.onSubmitForm} >Create Project</Button>;
+    }
+    else {
+      button = <div className="sk-folding-cube">
+        <div className="sk-cube1 sk-cube"></div>
+        <div className="sk-cube2 sk-cube"></div>
+        <div className="sk-cube4 sk-cube"></div>
+        <div className="sk-cube3 sk-cube"></div>
+      </div>;
+    }
     return (
       <div className="animated fadeIn">
         <Row>
@@ -117,7 +145,7 @@ class ProjectFormModal extends Component {
               </Form>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick = {this.onSubmitForm} >Create Project</Button>
+                {button}
               </ModalFooter>
             </Modal>
           </Col>

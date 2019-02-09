@@ -27,7 +27,7 @@ class ProjectPage extends Component {
   }
 
   mintTokenFormHandler(from, to, tokenURI, deviceURN, projectName) {
-    axios.post('/api/projects/mintNewToken', {projectAddress: this.state.projectAddress, tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, projectName: projectName, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
+    axios.post('/api/projects/mintNewToken', {projectAddress: projectName, tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, projectName: projectName, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
     .then(res => {
       console.log(res);
     })
@@ -76,7 +76,7 @@ class ProjectPage extends Component {
             </blockquote>
           </CardBody>
         </Card>
-        <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.mintTokenFormHandler} totalSupply= {parseInt(this.state.totalSupply)+1} projectList = {[projectName]} />
+        <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.mintTokenFormHandler}  projectList = {[projectName]} />
         </Col>
       </Suspense>
       </div>

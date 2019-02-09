@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from 'react-router-dom';
 import { Alert, Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
+
+//Login Page Component
 class Login extends Component {
     constructor(props){
       super(props);
@@ -11,7 +13,8 @@ class Login extends Component {
         password: '',
         forgotPassword: '',
         forgotPasswordEmail: '',
-        errorMessage: ''
+        errorMessage: '',
+        message: ''
       };
 
       this.handleChange = this.handleChange.bind(this);
@@ -49,11 +52,20 @@ class Login extends Component {
 
     onSubmitResetForm(e) {
       e.preventDefault();
-      axios.post("/api/users/userLogin", {email: this.state.email, password: this.state.password}).then(res=> {
-        if(res.data.status=="Yay"){
-          sessionStorage.setItem("clientToken", res.data.clientToken);
-          this.props.history.push('/dashboard');
+      axios.post("/api/users/forgotPassword", {email: this.state.forgotPasswordEmail}).then(res=> {
+        if(res.data.status==true){
+          this.setState({
+            forgotPassword: 'sent'
+          });
         }
+        else{
+          this.setState({
+            message: <Alert color="danger">
+                            {res.data.message}
+                          </Alert>
+          });
+        }
+
       });
     }
 
@@ -63,7 +75,7 @@ class Login extends Component {
       })
     }
     render() {
-        const { email, password, forgotPassword, forgotPasswordEmail, errorMessage } = this.state;
+        const { email, password, forgotPassword, forgotPasswordEmail, errorMessage, message } = this.state;
         let render;
         if(forgotPassword=='true'){
           render =
@@ -71,6 +83,7 @@ class Login extends Component {
             <Card className="p-4">
               <CardBody>
                 <Form>
+                {message}
                 <InputGroup className="mb-3">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
@@ -85,6 +98,16 @@ class Login extends Component {
                   </Col>
                 </Row>
                 </Form>
+              </CardBody>
+            </Card>
+          </CardGroup>;
+        }
+        else if(forgotPassword=='sent'){
+          render =
+          <CardGroup>
+            <Card className="p-4">
+              <CardBody>
+                  A reset password link has been sent to your email id.
               </CardBody>
             </Card>
           </CardGroup>;
@@ -123,17 +146,9 @@ class Login extends Component {
                       </Col>
                     </Row>
                   </Form>
-                </CardBody>
-              </Card>
-              <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
-                <CardBody className="text-center">
-                  <div>
-                    <h2>Sign up</h2> <br/>
-                    <p>Access the platform by registering your organization.</p>
-                    <Link to="/register">
-                      <Button color="primary" className="mt-3" active tabIndex={-1}>Register Now!</Button>
+                  Not yet registered on the platform? <Link to="/register">
+                      <Button color="link" className="px-0" >Click Here</Button>
                     </Link>
-                  </div>
                 </CardBody>
               </Card>
             </CardGroup>;

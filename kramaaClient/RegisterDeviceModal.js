@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, FormText,Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
+import axios from "axios";
 
 class RegisterDeviceModal extends Component {
 
@@ -14,12 +15,16 @@ class RegisterDeviceModal extends Component {
       protocol: 'MQTT',
       registryID: '',
       sensor: '',
-      selectedProject: ''
+      selectedProject: '',
+      isLoading: false,
+      totalSupply: ''
     };
 
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.fetchTokenSupply = this.fetchTokenSupply.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   loading = () => <div className="animated fadeIn pt-1 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
@@ -33,16 +38,34 @@ class RegisterDeviceModal extends Component {
     const { name, value } = e.target;
     console.log("name", name, "value", value);
     this.setState({ [name]: value });
-    if(name=="number"){
-      this.setState({tokenIDTo: this.props.totalSupply+parseInt(value)-1});
+    if(name== "selectedProject"){
+      this.fetchTokenSupply(value);
+      this.forceUpdate();
+    }
+    else if(name=="number"){
+      this.setState({tokenIDTo: this.state.totalSupply+parseInt(value)-1});
     }
     this.forceUpdate();
+  }
+
+  fetchTokenSupply(projectName) {
+    axios.post('/api/projects/getTokenSupply', { projectName: projectName})
+    .then(res=> {
+      this.setState({
+        totalSupply: parseInt(res.data.totalSupply)+1
+      })
+    });
+  }
+  componentDidMount() {
+    this.setState({
+      totalSupply: this.props.totalSupply
+    });
   }
 
   onSubmitForm(e) {
     e.preventDefault();
     this.props.parentHandler(
-      this.props.totalSupply,
+      this.state.totalSupply,
       this.state.tokenIDTo,
       {protocol: this.state.protocol, registryID: this.state.registryID, sensor: this.state.sensor},
       this.state.deviceURN,
@@ -51,12 +74,24 @@ class RegisterDeviceModal extends Component {
   }
 
   render() {
-    const {tokenIDTo, selectedProject, number,protocol, deviceType, registryID, sensor, deviceURN} = this.state;
+    const {tokenIDTo, selectedProject, number,protocol, deviceType, registryID, sensor, deviceURN, isLoading, totalSupply} = this.state;
     let dropdownRender = [<option key= "" name= "" value="">Select Project</option>];
     let j;
     for(var i=0;i<this.props.projectList.length; i++){
       j= this.props.projectList[i];
       dropdownRender.push(<option key= {j} name= {j} value={j}>{j}</option>);
+    }
+    let button;
+    if(!isLoading){
+      button = <Button color="primary" onClick = {this.onSubmitForm} >Create Project</Button>;
+    }
+    else {
+      button = <div className="sk-folding-cube">
+        <div className="sk-cube1 sk-cube"></div>
+        <div className="sk-cube2 sk-cube"></div>
+        <div className="sk-cube4 sk-cube"></div>
+        <div className="sk-cube3 sk-cube"></div>
+      </div>;
     }
 
     return (
@@ -92,7 +127,7 @@ class RegisterDeviceModal extends Component {
                     <Label htmlFor="text-input">Device Blockchain ID From</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="number" name="tokenIDFrom" disabled readOnly value= {this.props.totalSupply} placeholder="Text" />
+                    <Input type="number" name="tokenIDFrom" disabled readOnly value= {totalSupply} placeholder="Text" />
                     <FormText color="muted"></FormText>
                   </Col>
                 </FormGroup>

@@ -22,7 +22,7 @@ function isLoggedIn(req, res, next) {
   jwt.verify(token, configAuth.jwtAuthKey.secret, function (err, decoded) {
     if (err) {
       console.log(err);
-      return res.send({ status: false, message: "please login again" })
+      return res.send({ status: false, message: "Please login again" })
     } else {
       Client.findOne({
         where: {

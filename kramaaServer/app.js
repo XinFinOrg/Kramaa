@@ -15,8 +15,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
 app.use('/api/users', require('./userOnboarding/routes'));
 app.use('/api/dashboard', require('./userDashboard/routes'));
 app.use('/api/projects', require('./projectHandler/routes'));

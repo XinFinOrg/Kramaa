@@ -20,9 +20,16 @@ module.exports = {
         email: req.body.email
       }
     }).then(client => {
-      if(client){
+      if(client && client.emailVerified){
         console.log("User already exists");
         res.send({"status": "User already exists"});
+      }
+      else if(client && !client.emailVerified){
+        module.exports.resendOTPNewClient(email)
+        .then(createdClient => {
+          mailer.sendConfirmationOTP(createdClient.email, createdClient.verificationOTP);
+          res.send({"status": "Onboarded User", "otp": "true"});
+        });
       }
       else {
         module.exports.onboardNewClient(email)
@@ -140,6 +147,21 @@ module.exports = {
     });
   },
 
+  resendOTPNewClient: (email) => {
+    return new Promise(async function (resolve, reject) {
+      Client.findOne({
+        where: {
+          email: email
+        }
+      }).then(client => {
+        client.verificationOTP = Math.floor(Math.random() * 9999);
+        client.save().then(client => {
+          resolve(client);
+        })
+      })
+    });
+  },
+
   createNewClient: (firstName, lastName, email, password) => {
     return new Promise(async function (resolve, reject) {
       Client.findOne({
@@ -200,15 +222,36 @@ module.exports = {
         email: email
       }
     }).then(client => {
-      mailer.sendForgotPassword(email, client.uniqueId);
-      res.send({
-        status: true
-      });
+      if(client){
+        mailer.forgotPasswordMailer(req, email, client.uniqueId);
+        res.send({
+          status: true,
+          message: "A reset password link has been sent to your email id."
+        });
+      }
+      else{
+        res.send({
+          status: false,
+          message: "User does not exist on the system"
+        })
+      }
+
     });
   },
 
-  changePassword: (req, res) => {
-    let email= req.body.email
+  resetPassword: (req, res) => {
+    Client.findOne({
+      where: {
+        uniqueId: req.body.resetId
+      }
+    }).then(client => {
+      client.password = generateHash(req.body.password);
+      client.save().then(client => {
+        res.send({
+          status: true
+        })
+      })
+    })
   }
 
 }

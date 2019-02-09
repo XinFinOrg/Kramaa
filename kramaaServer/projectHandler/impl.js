@@ -30,5 +30,17 @@ module.exports = {
         req.body.projectName
       );
     })
+  },
+
+  getTokenSupply: (req, res) => {
+    Project.findOne({
+      where: {
+        name: req.body.projectName
+      }
+    }).then(project => {
+      web3Handler.checkTotalTokenSupply(project.tokenContractAddress).then(totalSupply=> {
+        res.send({totalSupply: totalSupply});
+      })
+    })
   }
 }

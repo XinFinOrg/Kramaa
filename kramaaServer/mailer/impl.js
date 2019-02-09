@@ -26,13 +26,13 @@ module.exports = {
   },
   //forgot password mailer
   forgotPasswordMailer: function (req, recipientmail, userhash) {
-    var link = "http://" + req.get('host') + "/resetPassword?resetId=" + userhash + "&email=" + recipientmail;
+    var link = "http://" + req.get('host') + "/resetPassword?resetId=" + userhash.toString();
     ejs.renderFile(__dirname + '/emailerTemplates/forgotPassword.ejs', {
       link: link
     }, (err, data) => {
       console.log(err);
       var mailOptions = {
-        from: "forgotPassword@mycontract.co",
+        from: "forgotPassword@kramaa.com",
         to: recipientmail,
         subject: "Reset Password link",
         html: data

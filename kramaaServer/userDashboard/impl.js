@@ -28,18 +28,19 @@ module.exports = {
   },
 
   createProject: (req, res) => {
+    console.log("Creating Project");
     contractHandler.createERC721Contract(req.body.tokenName, req.body.tokenSymbol).then(contractCode => {
       contractHandler.compileContract(contractCode).then(compiledContract => {
         web3Handler.deployContract(compiledContract.abi, compiledContract.byteCode).then(deploymentInformation => {
           console.log("Deployment info is ", deploymentInformation);
-          web3Handler.addNewProject(
-            deploymentInformation.contractAddress,
-            req.body.name,
-            req.body.name,
-            req.body.tokenName,
-            req.body.tokenSymbol,
-            "xinfin"
-          );
+          // web3Handler.addNewProject(
+          //   deploymentInformation.contractAddress,
+          //   req.body.name,
+          //   req.body.name,
+          //   req.body.tokenName,
+          //   req.body.tokenSymbol,
+          //   "xinfin"
+          // );
           let newProject = new Object();
           newProject.name = req.body.name;
           newProject.industry = req.body.industry;

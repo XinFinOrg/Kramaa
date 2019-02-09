@@ -73,7 +73,7 @@ class Profile extends Component {
             </CardBody>
           </Card>
         </Col>
-        <Button onClick= {this.renderColleagueForm}>Add your colleagues </Button>
+        <Button color="primary" onClick= {this.renderColleagueForm}>Add your colleagues </Button>
         {colleagueForm} <br />
       </div>
     )
