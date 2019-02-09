@@ -65,16 +65,11 @@ class Dashboard extends Component {
     this.thingModalToggler.current.toggle();
   }
 
-  projectFormHandler(name, industry, subIndustry, tokenName, tokenSymbol) {
-    axios.post("/api/dashboard/createProject", {name: name, industry: industry, subIndustry: subIndustry, tokenName: tokenName, tokenSymbol: tokenSymbol, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
-      if(res.data.status=="Project created successsfully"){
-        this.renderProjectModal();
-        this.setState({
-          projectList: [...this.state.projectList, res.data.project.name],
-          projectCount: parseInt(this.state.projectCount)+1
-        })
-      }
-    });
+  projectFormHandler(projectName) {
+    this.setState({
+      projectList: [...this.state.projectList, projectName],
+      projectCount: parseInt(this.state.projectCount)+1
+    })
   }
 
   mintTokenFormHandler(from, to, tokenURI, deviceURN, projectName) {
@@ -88,6 +83,7 @@ class Dashboard extends Component {
   }
 
   thingFormHandler(thingName, thingDescription, thingAttributes, thingBrand) {
+    this.renderThingModal();
     axios.post("/api/dashboard/createThing", {thingName: thingName, thingDescription: thingDescription, thingAttributes: thingAttributes, thingBrand: thingBrand, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
       if(res.data.status==true){
         this.setState({

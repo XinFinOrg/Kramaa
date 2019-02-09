@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, FormText,Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
-
+import axios from "axios";
 class ProjectFormModal extends Component {
 
   constructor(props) {
-    super(props);
-    this.state = {
+
+    const initialState = {
       modal: true,
       name: '',
       description: '',
@@ -17,10 +17,17 @@ class ProjectFormModal extends Component {
       isLoading: false
     };
 
+    super(props);
+    this.state = initialState;
+    this.reset = this.reset.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleIndustryChange = this.handleIndustryChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+  }
+
+  reset() {
+    this.setState(initialState);
   }
 
   componentDidMount() {
@@ -56,7 +63,14 @@ class ProjectFormModal extends Component {
     this.setState({
       isLoading: true
     })
-    this.props.parentHandler(this.state.name, this.state.industry, this.state.subIndustry, this.state.name, this.state.name)
+    const {name, description, industry, subIndustry, tokenName, tokenSymbol, isLoading} = this.state;
+    axios.post("/api/dashboard/createProject", {name: name, industry: industry, subIndustry: subIndustry, tokenName: name, tokenSymbol: name, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
+      if(res.data.status=="Project created successsfully"){
+        this.reset();
+        this.toggle();
+        this.props.parentHandler(res.data.project.name)
+      }
+    });
   }
 
   render() {
