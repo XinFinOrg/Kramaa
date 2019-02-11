@@ -3,7 +3,8 @@
 Components Required:
 
 Arduino Uno
-GSM Module (SIM900A) 
+NodeMCU
+GSM Module (SIM7600) 
 GPS Module (SIM28ML) 
 Accelerometer (ADXL335) 
 16x2 LCD 
