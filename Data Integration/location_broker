@@ -1,0 +1,221 @@
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
+#include <TinyGPS++.h>
+#include <SoftwareSerial.h>
+#include<dht.h>
+dht DHT;
+
+#define DHT11_PIN D1
+TinyGPSPlus gps;  
+SoftwareSerial ss(D4, D5);
+
+// Update these with values suitable for your network.
+const char* ssid = "$BlackBox$";
+const char* password = "threetwoone";
+const char* mqtt_server = "broker.mqtt-dashboard.com";
+
+float latitude , longitude;
+int year , month , date, hour , minute , second;
+String date_str , time_str , lat_str , lng_str;
+int pm;
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+long lastMsg = 0;
+char msg[50];
+int value = 0;
+
+void setup_wifi() {
+   delay(100);
+  // We start by connecting to a WiFi network
+    Serial.print("Connecting to ");
+    Serial.println(ssid);
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) 
+    {
+      delay(500);
+      Serial.print(".");
+    }
+  randomSeed(micros());
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void callback(char* topic, byte* payload, unsigned int length) 
+{
+  Serial.print("Command is: ");
+  Serial.print(topic);
+  int p =(char)payload[0]-'0';
+  int chk = DHT.read11(DHT11_PIN);
+  // if MQTT comes a 0 message, show humidity
+  if(p==0) 
+  {
+    Serial.println("to show humidity!]");
+    Serial.print(" Humidity is: " );
+    Serial.print(DHT.humidity, 1);
+    Serial.println('%');
+  } 
+  // if MQTT comes a 1 message, show temperature
+  if(p==1)
+  {
+  // digitalWrite(BUILTIN_LED, HIGH);
+    Serial.println(" is to show temperature!] ");
+  int chk = DHT.read11(DHT11_PIN);
+   Serial.print(" Temp is: " );
+   Serial.print(DHT.temperature, 1);
+   Serial.println(' C');
+  }
+  Serial.println();
+} //end callback
+
+void reconnect() {
+  // Loop until we're reconnected
+  while (!client.connected()) 
+  {
+    Serial.print("Attempting MQTT connection...");
+    // Create a random client ID
+    String clientId = "clientId-7Y19hnABHi";
+    clientId += String(random(0xffff), HEX);
+    // Attempt to connect
+    //if you MQTT broker has clientID,username and password
+    //please change following line to    if (client.connect(clientId,userName,passWord))
+    if (client.connect(clientId.c_str()))
+    {
+      Serial.println("connected");
+     //once connected to MQTT broker, subscribe command if any
+      client.subscribe("OsoyooCommand");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 6 seconds before retrying
+      delay(6000);
+    }
+  }
+} //end reconnect()
+
+void setup() {
+  Serial.begin(115200);
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
+  int chk = DHT.read11(DHT11_PIN);
+  Serial.print(" Starting Humidity: " );
+  //Serial.print(DHT.humidity, 1);
+  Serial.println('%');
+  Serial.print(" Starting Temparature ");
+  Serial.print(DHT.temperature, 1);
+  Serial.println('C');
+}
+
+void loop() {
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
+   while (ss.available() > 0)
+    if (gps.encode(ss.read()))
+    {
+      if (gps.location.isValid())
+      {
+        latitude = gps.location.lat();
+        lat_str = String(latitude , 6);
+        longitude = gps.location.lng();
+        lng_str = String(longitude , 6);
+      }
+
+      if (gps.date.isValid())
+      {
+        date_str = "";
+        date = gps.date.day();
+        month = gps.date.month();
+        year = gps.date.year();
+
+        if (date < 10)
+          date_str = '0';
+        date_str += String(date);
+
+        date_str += " / ";
+
+        if (month < 10)
+          date_str += '0';
+        date_str += String(month);
+
+        date_str += " / ";
+
+        if (year < 10)
+          date_str += '0';
+        date_str += String(year);
+      }
+
+      if (gps.time.isValid())
+      {
+        time_str = "";
+        hour = gps.time.hour();
+        minute = gps.time.minute();
+        second = gps.time.second();
+
+        minute = (minute + 30);
+        if (minute > 59)
+        {
+          minute = minute - 60;
+          hour = hour + 1;
+        }
+        hour = (hour + 5) ;
+        if (hour > 23)
+          hour = hour - 24;
+
+        if (hour >= 12)
+          pm = 1;
+        else
+          pm = 0;
+
+        hour = hour % 12;
+
+        if (hour < 10)
+          time_str = '0';
+        time_str += String(hour);
+
+        time_str += " : ";
+
+        if (minute < 10)
+          time_str += '0';
+        time_str += String(minute);
+
+        time_str += " : ";
+
+        if (second < 10)
+          time_str += '0';
+        time_str += String(second);
+
+        if (pm == 1)
+          time_str += " PM ";
+        else
+          time_str += " AM ";
+
+      }
+
+    }
+
+    
+  long now = millis();
+  // read DHT11 sensor every 6 seconds
+  if (now - lastMsg > 6000) {
+     lastMsg = now;
+     int chk = DHT.read11(DHT11_PIN);
+     String msg="temperature: ";
+     msg= msg+ DHT.temperature;
+     msg = msg+";latitude " ;
+     msg=msg+lat_str;
+     msg=msg+" ;longitude " ;
+     msg=msg+lng_str;
+     char message[58];
+     msg.toCharArray(message,58);
+     Serial.println(message);
+     //publish sensor data to MQTT broker
+    client.publish("Tanmay", message);
+  }
+}
