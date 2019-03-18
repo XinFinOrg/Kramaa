@@ -10,8 +10,8 @@ TinyGPSPlus gps;
 SoftwareSerial ss(D4, D5);
 
 // Update these with values suitable for your network.
-const char* ssid = "$BlackBox$";
-const char* password = "threetwoone";
+const char* ssid = "GS9";
+const char* password = "abcd1234";
 const char* mqtt_server = "broker.mqtt-dashboard.com";
 
 float latitude , longitude;
@@ -45,8 +45,8 @@ void setup_wifi() {
 
 void callback(char* topic, byte* payload, unsigned int length) 
 {
-  Serial.print("Command is: ");
-  Serial.print(topic);
+  //Serial.print("Command is: ");
+  //Serial.print(topic);
   int p =(char)payload[0]-'0';
   int chk = DHT.read11(DHT11_PIN);
   // if MQTT comes a 0 message, show humidity
@@ -61,11 +61,14 @@ void callback(char* topic, byte* payload, unsigned int length)
   if(p==1)
   {
   // digitalWrite(BUILTIN_LED, HIGH);
-    Serial.println(" is to show temperature!] ");
+   //eeSerial.println(" is to show temperature!] ");
   int chk = DHT.read11(DHT11_PIN);
    Serial.print(" Temp is: " );
+ 
    Serial.print(DHT.temperature, 1);
-   Serial.println(' C');
+    Serial.print(" C   ");
+   Serial.print("humidity is :");
+   Serial.print(DHT.humidity, 1);
   }
   Serial.println();
 } //end callback
@@ -103,7 +106,7 @@ void setup() {
   client.setCallback(callback);
   int chk = DHT.read11(DHT11_PIN);
   Serial.print(" Starting Humidity: " );
-  //Serial.print(DHT.humidity, 1);
+  Serial.print(DHT.humidity, 1);
   Serial.println('%');
   Serial.print(" Starting Temparature ");
   Serial.print(DHT.temperature, 1);
@@ -208,6 +211,8 @@ void loop() {
      int chk = DHT.read11(DHT11_PIN);
      String msg="temperature: ";
      msg= msg+ DHT.temperature;
+     msg = msg+";humidity " ;
+     msg= msg+ DHT.humidity;
      msg = msg+";latitude " ;
      msg=msg+lat_str;
      msg=msg+" ;longitude " ;
