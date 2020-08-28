@@ -15,11 +15,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/users', require('./userOnboarding/routes'));
-app.use('/api/dashboard', require('./userDashboard/routes'));
-app.use('/api/projects', require('./projectHandler/routes'));
-app.use('/api/devices', require('./deviceHandler/routes'));
-app.use('/api/things', require('./thingHandler/routes'));
+app.use('/users', require('./userOnboarding/routes'));
+app.use('/dashboard', require('./userDashboard/routes'));
+app.use('/projects', require('./projectHandler/routes'));
+app.use('/devices', require('./deviceHandler/routes'));
+app.use('/things', require('./thingHandler/routes'));
 
 app.use(express.static(path.resolve(__dirname, '..','dist')));
 app.use(express.static(path.resolve(__dirname, '..','kramaaClient/assets')));
