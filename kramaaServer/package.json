@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/kramaaApp"
+    "start": "pm2 start ./bin/kramaaApp --name Kramaa",
+    "dev": "node ./bin/kramaaApp"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
